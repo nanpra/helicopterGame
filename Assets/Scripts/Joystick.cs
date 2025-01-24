@@ -1,90 +1,39 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Joystick : MonoBehaviour, IDragHandler, IEndDragHandler
+public class Joystick : MonoBehaviour, IDragHandler
 {
-    public Transform joystickBackgroundTransform, joystickControllerTransform;
+    public RectTransform joystickHandle;
+    public RectTransform joystickBase;
 
-    private bool reset = false;
+    private Vector2 inputVector = Vector2.zero;
+    private Vector2 joystickStartPosition;
 
-    private float maxMovingDistance;
+    public Vector2 InputVector => inputVector; 
 
-    public bool isMoving = false;
-
-    public float x, y;
-    public float inputAxisX, inputAxisY;
-
-    void Start()
+    private void Start()
     {
-        maxMovingDistance = 77.5f;
-    }
-
-    void Update()
-    {
-        if (reset)
-        {
-            joystickControllerTransform.position = new Vector3(joystickControllerTransform.position.x - (joystickControllerTransform.position.x - joystickBackgroundTransform.position.x) * 10.0f * Time.deltaTime, joystickControllerTransform.position.y - (joystickControllerTransform.position.y - joystickBackgroundTransform.position.y) * 10.0f * Time.deltaTime, 0.0f);
-
-            x = (joystickControllerTransform.position.x - joystickBackgroundTransform.position.x);
-            y = joystickControllerTransform.position.y - joystickBackgroundTransform.position.y;
-
-            inputAxisX = x / maxMovingDistance;
-            inputAxisY = y / maxMovingDistance;
-
-            if (joystickControllerTransform.position.x < (joystickBackgroundTransform.position.x + 1.0f) && (joystickBackgroundTransform.position.x - 1f) < joystickControllerTransform.position.x)
-            {
-                joystickControllerTransform.position = new Vector3(joystickBackgroundTransform.position.x, joystickBackgroundTransform.position.y, 0f);
-                reset = false;
-            }
-        }
+        joystickStartPosition = joystickBase.position;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (isMoving == false)
-            isMoving = true;
-
-        if (isMoving)
-        {
-            float realtimeDistance = (eventData.position.x - joystickBackgroundTransform.position.x) * (eventData.position.x - joystickBackgroundTransform.position.x) + (eventData.position.y - joystickBackgroundTransform.position.y) * (eventData.position.y - joystickBackgroundTransform.position.y);
-
-            if (realtimeDistance <= maxMovingDistance * maxMovingDistance)
-            {
-                joystickControllerTransform.position = new Vector3(eventData.position.x, eventData.position.y, 0.0f);
-            }
-            else
-            {
-                float relativeX = Mathf.Sqrt((maxMovingDistance * maxMovingDistance) / (1.0f + ((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y)) * ((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y))));
-
-                if (eventData.position.x > joystickBackgroundTransform.position.x)
-                {
-                    if (eventData.position.y > joystickBackgroundTransform.position.y)
-                        joystickControllerTransform.position = new Vector3(joystickBackgroundTransform.position.x + relativeX * Mathf.Abs((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y + 0.000001f)), joystickBackgroundTransform.position.y + relativeX, 0.0f);
-                    else
-                        joystickControllerTransform.position = new Vector3(joystickBackgroundTransform.position.x + relativeX * Mathf.Abs((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y + 0.000001f)), joystickBackgroundTransform.position.y - relativeX, 0.0f);
-                }
-                else
-                {
-                    if (eventData.position.y > joystickBackgroundTransform.position.y)
-                        joystickControllerTransform.position = new Vector3(joystickBackgroundTransform.position.x - relativeX * Mathf.Abs((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y + 0.000001f)), joystickBackgroundTransform.position.y + relativeX, 0.0f);
-                    else
-                        joystickControllerTransform.position = new Vector3(joystickBackgroundTransform.position.x - relativeX * Mathf.Abs((eventData.position.x - joystickBackgroundTransform.position.x) / (eventData.position.y - joystickBackgroundTransform.position.y + 0.000001f)), joystickBackgroundTransform.position.y - relativeX, 0.0f);
-                }
-            }
-
-            x = (joystickControllerTransform.position.x - joystickBackgroundTransform.position.x);
-            y = joystickControllerTransform.position.y - joystickBackgroundTransform.position.y;
-
-            inputAxisX = x / maxMovingDistance;
-            inputAxisY = y / maxMovingDistance;
-
-            reset = false;
-        }
+        Vector2 dragPosition = eventData.position;
+        Vector2 offset = dragPosition - joystickStartPosition;
+        float radius = joystickBase.sizeDelta.x / 2;
+        inputVector = Vector2.ClampMagnitude(offset / radius, 1);
+        joystickHandle.anchoredPosition = inputVector * radius;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        isMoving = false;
-        reset = true;
-    }
+    //public void OnPointerDown(PointerEventData eventData)
+    //{
+    //    print(1);
+    //    OnDrag(eventData);
+    //}
+
+    //public void OnPointerUp(PointerEventData eventData)
+    //{
+    //    inputVector = Vector2.zero;
+    //    joystickHandle.anchoredPosition = Vector2.zero;
+    //}
 }
