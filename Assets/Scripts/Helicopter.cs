@@ -20,9 +20,10 @@ public class Helicopter : MonoBehaviour
     private Vector3 inputDirection;
     private Quaternion targetRotation;
     private Rigidbody rb;
-
+    private bool gasOver;
     private void Start()
     {
+        gasOver = false;
         rb = GetComponent<Rigidbody>();
     }
     private void Update()
@@ -67,12 +68,19 @@ public class Helicopter : MonoBehaviour
 
     public void GasPressed()
     {
-        Vector3 force = new Vector3(0, upwardForce, 0);
-        rb.AddForce(force);
+        if(!gasOver)
+        {
+            Vector3 force = new Vector3(0, upwardForce, 0);
+            rb.AddForce(force);
+        }
     }
 
     private void DecreaseFuel()
     {
         fuelSlider.value -= fuelConsumptionRate * Time.deltaTime;
+        if(fuelSlider.value <= 0f)
+        {
+            gasOver = true;
+        }
     }
 }
