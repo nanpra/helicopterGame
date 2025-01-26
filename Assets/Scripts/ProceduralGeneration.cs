@@ -3,83 +3,62 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    [Header("Map Settings")]
-    public string segmentTag = "Segment";
-    public int initialSegments = 5;
-    public float segmentLength = 50f;
-    public Transform helicopter;
+    [Header("Generation Settings")]
+    public Transform helicopter;       // Reference to the player's helicopter
+    public float spawnDistance = 50f;  // Distance ahead to spawn obstacles
+    public float despawnDistance = 20f; // Distance behind to despawn obstacles
+    public float obstacleSpacing = 10f; // Spacing between consecutive obstacles
 
-    [Header("Obstacle and Fuel Settings")]
+    [Header("Obstacle Settings")]
     public string obstacleTag = "Obstacle";
-    public string fuelPickupTag = "FuelPickup";
-    public int maxObstaclesPerSegment = 3; 
-    public int maxFuelPickupsPerSegment = 2; 
+    public Vector3 spawnArea = new Vector3(10, 10, 0);
 
-    private Queue<GameObject> activeSegments = new Queue<GameObject>();
-    private float spawnZ = 0f;
+    private float nextSpawnZ;
+    private Transform playerLastTransform;
+
+    private Queue<GameObject> activeObstacles = new Queue<GameObject>();
 
     private void Start()
     {
-        for (int i = 0; i < initialSegments; i++)
-        {
-            SpawnSegment();
-        }
+        nextSpawnZ = helicopter.position.z + spawnDistance;
     }
 
     private void Update()
     {
-        // Spawn new segments as the helicopter moves forward
-        if (helicopter.position.z > spawnZ - (initialSegments * segmentLength))
+        GenerateObstacles();
+        DespawnObstacles();
+    }
+
+    private void GenerateObstacles()
+    {
+        while (helicopter.position.z + spawnDistance > nextSpawnZ)
         {
-            SpawnSegment();
-            RemoveOldestSegment();
+            Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x),Random.Range(-spawnArea.y, spawnArea.y),nextSpawnZ);
+            GameObject obstacle = PoolingObjects.Instance.SpawnFromPool(obstacleTag, spawnPosition, Quaternion.identity);
+
+            if (obstacle != null)
+            {
+                activeObstacles.Enqueue(obstacle);
+            }
+            nextSpawnZ += obstacleSpacing;
         }
     }
 
-    private void SpawnSegment()
+    private void DespawnObstacles()
     {
-        // Spawn a segment from the pool
-        GameObject newSegment = PoolingObjects.Instance.SpawnFromPool(segmentTag, new Vector3(0, 0, spawnZ), Quaternion.identity);
-        activeSegments.Enqueue(newSegment);
-
-        // Add random obstacles and pickups
-        AddObstaclesAndPickups(newSegment);
-
-        // Update spawn position for the next segment
-        spawnZ += segmentLength;
-    }
-
-    private void AddObstaclesAndPickups(GameObject segment)
-    {
-        // Randomly place obstacles
-        for (int i = 0; i < maxObstaclesPerSegment; i++)
+        while (activeObstacles.Count > 0)
         {
-            Vector3 randomPosition = new Vector3(
-                Random.Range(-10f, 10f),  // Random X position
-                0f,                      // Ground level
-                Random.Range(-segmentLength / 2, segmentLength / 2) // Random Z position within the segment
-            );
-            PoolingObjects.Instance.SpawnFromPool(obstacleTag, segment.transform.position + randomPosition, Quaternion.identity);
-        }
+            GameObject oldestObstacle = activeObstacles.Peek();
 
-        // Randomly place fuel pickups
-        for (int i = 0; i < maxFuelPickupsPerSegment; i++)
-        {
-            Vector3 randomPosition = new Vector3(
-                Random.Range(-10f, 10f),
-                Random.Range(2f, 5f),     // Floating in the air
-                Random.Range(-segmentLength / 2, segmentLength / 2) // Random Z position within the segment
-            );
-            PoolingObjects.Instance.SpawnFromPool(fuelPickupTag, segment.transform.position + randomPosition, Quaternion.identity);
-        }
-    }
-
-    private void RemoveOldestSegment()
-    {
-        if (activeSegments.Count > 0)
-        {
-            GameObject oldestSegment = activeSegments.Dequeue();
-            oldestSegment.SetActive(false);
+            if (oldestObstacle.transform.position.z < helicopter.position.z - despawnDistance)
+            {
+                PoolingObjects.Instance.ReturnToPool(obstacleTag, oldestObstacle);
+                activeObstacles.Dequeue();
+            }
+            else
+            {
+                break;
+            }
         }
     }
 }
