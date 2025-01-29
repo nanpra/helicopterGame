@@ -5,9 +5,24 @@ public class Bulet : MonoBehaviour
 
     public float bulletSpeed = 20f;
     public float lifeTime = 5f;
+    private string bulletTag = "Bullet";
 
-    private void Start()
+    private void OnEnable()
     {
-        Destroy(gameObject, lifeTime);
+        Invoke("ReturnToPool", lifeTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<Helicopter>().TakeDamage();
+            ReturnToPool();
+        }
+    }
+
+    private void ReturnToPool()
+    {
+        PoolingObjects.Instance.ReturnToPool(bulletTag, gameObject);
     }
 }

@@ -15,7 +15,6 @@ public class PoolingObjects : MonoBehaviour
 
     [Header("Pool Settings")]
     public List<Pool> pools;
-
     private Dictionary<string, Queue<GameObject>> poolDictionary;
 
     private void Awake()
@@ -109,7 +108,7 @@ public class PoolingObjects : MonoBehaviour
         obj.transform.position = position;
         obj.transform.rotation = rotation;
 
-        // Reset any Rigidbody (if present) to avoid leftover velocity
+        // Reset Rigidbody (if present) to avoid leftover velocity
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         if (rb != null)
         {

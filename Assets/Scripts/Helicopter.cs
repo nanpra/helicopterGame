@@ -59,18 +59,9 @@ public class Helicopter : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void TakeDamage()
     {
-        if (other.CompareTag("Bullet"))
-        {
-            TakeDamage();
-            GameManager.Instance.healthSlider.value -= 0.1f;
-            Destroy(other.gameObject);
-        }
-    }
-
-    private void TakeDamage()
-    {
+        GameManager.Instance.healthSlider.value -= 0.1f;
         // Instantiate hit effect
         //if (hitEffect != null)
         //{

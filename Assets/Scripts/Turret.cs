@@ -8,6 +8,7 @@ public class Turret : MonoBehaviour
     public float rotationSpeed = 5f;
     public float detectionRange = 30f;
     public float fireRate = 2f;
+    public string bulletTag = "Bullet";
 
     [Header("Bullet Settings")]
     public GameObject bulletPrefab;
@@ -17,12 +18,17 @@ public class Turret : MonoBehaviour
     public float burstIntervalTime = 2.5f;
 
 
+
     [Header("Target")]
     public Transform helicopter;
 
     private float nextFireTime;
 
     private void FixedUpdate()
+    {
+        Movement();
+    }
+    private void Movement()
     {
         if (helicopter == null) return;
         float distanceToHelicopter = Vector3.Distance(transform.position, helicopter.position);
@@ -57,7 +63,7 @@ public class Turret : MonoBehaviour
 
     private void Fire()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = PoolingObjects.Instance.SpawnFromPool(bulletTag, firePoint.position, firePoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
 
         if (rb != null)
