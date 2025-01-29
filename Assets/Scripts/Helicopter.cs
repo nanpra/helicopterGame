@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,64 +8,103 @@ public class Helicopter : MonoBehaviour
     public float forwardSpeed = 10f;
     public float rotationSpeed = 5f;
     public float tiltAmount = 15f;
-    public float verticalSpeed = 5f;
+    public float upwardForce = 100;
 
-    [Header("Fuel Settings")]
-    public Slider fuelSlider;
-    public float fuelConsumptionRate = 0.1f;
+    [Header("Impact Settings")]
+    //public GameObject hitEffect;
+    public float shakeIntensity = 0.2f;
+    public float shakeDuration = 0.2f;
 
     [Header("Joystick Reference")]
-    public Joystick joystick; 
+    public Joystick joystick;
 
     private Vector3 inputDirection;
     private Quaternion targetRotation;
     private Rigidbody rb;
-    private bool gasOver;
+
     private void Start()
     {
-        gasOver = false;
         rb = GetComponent<Rigidbody>();
     }
+
     private void Update()
     {
-        DecreaseFuel();
-        //DownwardForce();
         HandleInput();
-        MoveHelicopter();
+        MoveForward();
         RotateTowardsInput();
     }
 
     private void HandleInput()
     {
-        Vector2 input  = joystick.InputVector;
-        inputDirection = new Vector3(input.x, input.y , 1f).normalized;
+        Vector2 input = joystick.InputVector;
+        inputDirection = new Vector3(input.x, 0f, input.y).normalized;
         if (inputDirection != Vector3.zero)
         {
-            targetRotation = Quaternion.LookRotation(new Vector3(inputDirection.x, 0f, inputDirection.z), Vector3.up);
+            targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
         }
     }
 
-    private void MoveHelicopter()
+    private void MoveForward()
     {
-        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime, Space.Self);
-        if (!gasOver)
-        {
-            float verticalMovement = inputDirection.y * verticalSpeed * Time.deltaTime;
-            transform.Translate(Vector3.up * verticalMovement, Space.World);
-        }
+        transform.Translate(transform.forward * forwardSpeed * Time.deltaTime, Space.World);
     }
 
     private void RotateTowardsInput()
     {
-        if (Mathf.Abs(inputDirection.x) > 0.1f)
+        if (inputDirection != Vector3.zero)
         {
-            float turnDirection = inputDirection.x;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            float tilt = -inputDirection.x * tiltAmount;
-            transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, tilt);
+            float tilt = Mathf.Lerp(0f, -tiltAmount, Mathf.Abs(inputDirection.x));
+            transform.localRotation *= Quaternion.Euler(0f, 0f, tilt * Mathf.Sign(inputDirection.x));
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            TakeDamage();
+            GameManager.Instance.healthSlider.value -= 0.1f;
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void TakeDamage()
+    {
+        // Instantiate hit effect
+        //if (hitEffect != null)
+        //{
+        //    Instantiate(hitEffect, transform.position, Quaternion.identity);
+        //}
+
+        // Vibrate the phone
+#if UNITY_ANDROID || UNITY_IOS
+        Handheld.Vibrate();
+#endif
+
+        // Shake the helicopter
+        StartCoroutine(ShakeHelicopter());
+    }
+
+    private IEnumerator ShakeHelicopter()
+    {
+        Vector3 originalPosition = transform.position;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < shakeDuration)
+        {
+            float xOffset = Random.Range(-shakeIntensity, shakeIntensity);
+            float yOffset = Random.Range(-shakeIntensity, shakeIntensity);
+
+            transform.position = originalPosition + new Vector3(xOffset, yOffset, 0);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.position = originalPosition; // Reset position after shake
+    }
+
     //private void DownwardForce()
     //{
     //    Vector3 gravityForce = new Vector3(0, -downwardForce, 0);
@@ -79,13 +119,4 @@ public class Helicopter : MonoBehaviour
     //        rb.AddForce(force);
     //    }
     //}
-
-    private void DecreaseFuel()
-    {
-        fuelSlider.value -= fuelConsumptionRate * Time.deltaTime;
-        if(fuelSlider.value <= 0f)
-        {
-            gasOver = true;
-        }
-    }
 }
