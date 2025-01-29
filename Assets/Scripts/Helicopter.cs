@@ -37,7 +37,7 @@ public class Helicopter : MonoBehaviour
     private void HandleInput()
     {
         Vector2 input = joystick.InputVector;
-        inputDirection = new Vector3(input.x, 0f, input.y).normalized;
+        inputDirection = new Vector3(input.x, input.y , 1f).normalized;
         if (inputDirection != Vector3.zero)
         {
             targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
