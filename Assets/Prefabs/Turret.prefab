@@ -54,10 +54,9 @@ MonoBehaviour:
   bulletTag: Bullet
   bulletPrefab: {fileID: 5694905771358377352, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
   firePoint: {fileID: 5162077457108154000}
-  bulletSpeed: 50
-  leadTime: 0.2
+  bulletSpeed: 30
+  leadTime: 0.25
   burstIntervalTime: 5
-  helicopter: {fileID: 0}
 --- !u!1 &1706947966527562104
 GameObject:
   m_ObjectHideFlags: 0

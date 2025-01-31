@@ -4,43 +4,61 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     [Header("Generation Settings")]
-    public Transform helicopter;       // Reference to the player's helicopter
-    public float spawnDistance = 50f;  // Distance ahead to spawn obstacles
-    public float despawnDistance = 20f; // Distance behind to despawn obstacles
-    public float obstacleSpacing = 10f; // Spacing between consecutive obstacles
-
-    [Header("Obstacle Settings")]
+    public Transform helicopter;
+    public float despawnDistance = 20f;
     public string obstacleTag = "Obstacle";
-    public Vector3 spawnArea = new Vector3(10, 10, 0);
-
-    private float nextSpawnZ;
-    private Transform playerLastTransform;
+    public Vector3 spawnArea = new Vector3(30, 0, 0);
 
     private Queue<GameObject> activeObstacles = new Queue<GameObject>();
+    private GameObject lastSpawnedObstacle;
 
     private void Start()
     {
-        nextSpawnZ = helicopter.position.z + spawnDistance;
+        SpawnFirstObstacle();
     }
 
     private void Update()
     {
-        GenerateObstacles();
+        CheckForNewObstacle();
         DespawnObstacles();
     }
 
-    private void GenerateObstacles()
+    private void SpawnFirstObstacle()
     {
-        while (helicopter.position.z + spawnDistance > nextSpawnZ)
-        {
-            Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x),Random.Range(-spawnArea.y, spawnArea.y),nextSpawnZ);
-            GameObject obstacle = PoolingObjects.Instance.SpawnFromPool(obstacleTag, spawnPosition, Quaternion.identity);
+        Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), Random.Range(-spawnArea.y, spawnArea.y), helicopter.position.z + 30f);
+        GameObject firstObstacle = PoolingObjects.Instance.SpawnFromPool(obstacleTag, spawnPosition, Quaternion.identity);
 
-            if (obstacle != null)
-            {
-                activeObstacles.Enqueue(obstacle);
-            }
-            nextSpawnZ += obstacleSpacing;
+        if (firstObstacle != null)
+        {
+            activeObstacles.Enqueue(firstObstacle);
+            lastSpawnedObstacle = firstObstacle;
+        }
+    }
+
+    private void CheckForNewObstacle()
+    {
+        if (lastSpawnedObstacle == null) return;
+
+        float obstacleLength = lastSpawnedObstacle.GetComponent<Renderer>().bounds.size.z - 10;
+        float spawnTriggerZ = lastSpawnedObstacle.transform.position.z - (1.25f * obstacleLength);
+        float fullSpawnZ = lastSpawnedObstacle.transform.position.z + obstacleLength;
+
+        // spawn after 50%
+        if (helicopter.position.z >= spawnTriggerZ)
+        {
+            SpawnNextObstacle(fullSpawnZ);
+        }
+    }
+
+    private void SpawnNextObstacle(float spawnZ)
+    {
+        Vector3 spawnPosition = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), Random.Range(-spawnArea.y, spawnArea.y), spawnZ);
+        GameObject newObstacle = PoolingObjects.Instance.SpawnFromPool(obstacleTag, spawnPosition, Quaternion.identity);
+
+        if (newObstacle != null)
+        {
+            activeObstacles.Enqueue(newObstacle);
+            lastSpawnedObstacle = newObstacle;
         }
     }
 

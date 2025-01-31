@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public float fuelConsumptionRate = 0.1f;
     public float scoreIncreaseRate = 10f;
 
+    [Header("Refrences")]
+    public Helicopter helicopterScript;
+
     private float score = 0f;
     private bool isGameOver = false;
     public bool gasOver;

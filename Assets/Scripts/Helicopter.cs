@@ -14,6 +14,7 @@ public class Helicopter : MonoBehaviour
     //public GameObject hitEffect;
     public float shakeIntensity = 0.2f;
     public float shakeDuration = 0.2f;
+    public float buildingHitDamage = 35f;
 
     [Header("Joystick Reference")]
     public Joystick joystick;
@@ -31,6 +32,7 @@ public class Helicopter : MonoBehaviour
     {
         HandleInput();
         MoveForward();
+        LimitYMovement();
         RotateTowardsInput();
     }
 
@@ -42,6 +44,12 @@ public class Helicopter : MonoBehaviour
         {
             targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
         }
+    }
+    private void LimitYMovement()
+    {
+        Vector3 newPosition = transform.position;
+        newPosition.y = Mathf.Clamp(newPosition.y, 0, 40);
+        transform.position = newPosition;
     }
 
     private void MoveForward()
@@ -110,4 +118,12 @@ public class Helicopter : MonoBehaviour
     //        rb.AddForce(force);
     //    }
     //}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Building"))
+        {
+            GameManager.Instance.healthSlider.value -= buildingHitDamage;
+        }
+    }
 }

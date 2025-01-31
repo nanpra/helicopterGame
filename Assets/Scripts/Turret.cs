@@ -11,28 +11,31 @@ public class Turret : MonoBehaviour
     public string bulletTag = "Bullet";
 
     [Header("Bullet Settings")]
-    public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed = 20f;
     public float leadTime = 0.5f;
     public float burstIntervalTime = 2.5f;
 
-
-
-    [Header("Target")]
-    public Transform helicopter;
-
     private float nextFireTime;
+    private Transform helicopterTransform;
+
+    private void Start()
+    {
+        if (GameManager.Instance.helicopterScript != null)
+        {
+            helicopterTransform = GameManager.Instance.helicopterScript.transform;
+        }
+    }
 
     private void FixedUpdate()
     {
-        Movement();
-    }
-    private void Movement()
-    {
-        if (helicopter == null) return;
-        float distanceToHelicopter = Vector3.Distance(transform.position, helicopter.position);
-        if (distanceToHelicopter <= detectionRange)
+        if (helicopterTransform == null) return;
+
+        float distanceToHelicopter = Vector3.Distance(transform.position, helicopterTransform.position);
+        bool helicopterInRange = distanceToHelicopter <= detectionRange;
+        bool helicopterNotCrossed = helicopterTransform.position.z + 6 <= transform.position.z;
+
+        if (helicopterInRange && helicopterNotCrossed)
         {
             RotateTowardsTarget();
             if (Time.time >= nextFireTime)
@@ -64,25 +67,25 @@ public class Turret : MonoBehaviour
     private void Fire()
     {
         GameObject bullet = PoolingObjects.Instance.SpawnFromPool(bulletTag, firePoint.position, firePoint.rotation);
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (bullet == null) return;
 
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
             Vector3 predictedPosition = PredictHelicopterPosition();
             Vector3 fireDirection = (predictedPosition - firePoint.position).normalized;
-
             rb.linearVelocity = fireDirection * bulletSpeed;
-            Debug.Log("Bullet fired towards: " + predictedPosition);
         }
     }
 
     private Vector3 PredictHelicopterPosition()
     {
-        if (helicopter == null) return firePoint.position;
+        if (helicopterTransform == null) return firePoint.position;
 
-        Rigidbody heliRb = helicopter.GetComponent<Rigidbody>();
-        if (heliRb == null) return helicopter.position;
-        return helicopter.position + (heliRb.linearVelocity * leadTime); //shoot ahead in time
+        Rigidbody heliRb = helicopterTransform.GetComponent<Rigidbody>();
+        if (heliRb == null) return helicopterTransform.position;
+
+        return helicopterTransform.position + (heliRb.linearVelocity * leadTime);
     }
 
     private void OnDrawGizmosSelected()
