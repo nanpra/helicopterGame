@@ -60,7 +60,6 @@ public class GameManager : MonoBehaviour
     //        scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
     //    }
     //}
-
     private void DecreaseFuel()
     {
         fuelSlider.value -= fuelConsumptionRate * Time.deltaTime;

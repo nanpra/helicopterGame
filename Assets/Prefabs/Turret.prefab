@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1877268802220175252}
   m_Layer: 0
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +52,6 @@ MonoBehaviour:
   detectionRange: 30
   fireRate: 1
   bulletTag: Bullet
-  bulletPrefab: {fileID: 5694905771358377352, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
   firePoint: {fileID: 5162077457108154000}
   bulletSpeed: 30
   leadTime: 0.25

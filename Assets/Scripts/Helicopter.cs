@@ -16,6 +16,11 @@ public class Helicopter : MonoBehaviour
     public float shakeDuration = 0.2f;
     public float buildingHitDamage = 35f;
 
+    [Header("Fuel Settings")]
+    public float maxFuel = 100f;
+    public float currentFuel = 100f;
+    public float fuelPickupAmount = 20f;
+
     [Header("Joystick Reference")]
     public Joystick joystick;
 
@@ -28,11 +33,12 @@ public class Helicopter : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        //SpawnFuel(new Vector3(Random.Range( transform.position.x - 4 , transform.position.x +4) , Random.Range(transform.position.y , transform.position.z));
         HandleInput();
         MoveForward();
-        LimitYMovement();
+        LimitMovement();
         RotateTowardsInput();
     }
 
@@ -45,10 +51,11 @@ public class Helicopter : MonoBehaviour
             targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
         }
     }
-    private void LimitYMovement()
+    private void LimitMovement()
     {
         Vector3 newPosition = transform.position;
         newPosition.y = Mathf.Clamp(newPosition.y, 0, 40);
+        newPosition.x = Mathf.Clamp(newPosition.x, -50, 50);
         transform.position = newPosition;
     }
 
@@ -124,6 +131,41 @@ public class Helicopter : MonoBehaviour
         if(collision.gameObject.CompareTag("Building"))
         {
             GameManager.Instance.healthSlider.value -= buildingHitDamage;
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Fuel"))
+        {
+            PickupFuel(other.gameObject);
+        }
+        else if (other.CompareTag("Pickup"))
+        {
+            PickupObject(other.gameObject);
+        }
+    }
+
+    private void PickupFuel(GameObject fuel)
+    {
+        currentFuel = Mathf.Clamp(currentFuel + fuelPickupAmount, 0, maxFuel);
+        PoolingObjects.Instance.ReturnToPool("Fuel", fuel);
+    }
+
+    private void PickupObject(GameObject pickup)
+    {
+        // Handle other pickups (e.g., coins, power-ups)
+        PoolingObjects.Instance.ReturnToPool("Pickup", pickup);
+    }
+
+    public void SpawnFuel(Vector3 spawnPosition)
+    {
+        GameObject fuel = PoolingObjects.Instance.SpawnFromPool("Fuel", spawnPosition, Quaternion.identity);
+        if (fuel == null)
+        {
+            Debug.LogWarning("Fuel could not be spawned!");
+            return;
         }
     }
 }

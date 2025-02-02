@@ -385,6 +385,9 @@ MonoBehaviour:
   shakeIntensity: 0.2
   shakeDuration: 0.2
   buildingHitDamage: 35
+  maxFuel: 100
+  currentFuel: 100
+  fuelPickupAmount: 20
   joystick: {fileID: 244988199}
 --- !u!65 &328429111
 BoxCollider:
@@ -469,7 +472,7 @@ Transform:
   m_GameObject: {fileID: 328429108}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 29.51, z: 20.9}
+  m_LocalPosition: {x: 0, y: 34.42, z: 20.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -563,8 +566,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60.000004
+  far clip plane: 100
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -591,12 +594,12 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 30.51, z: 13.9}
+  m_LocalPosition: {x: 0, y: 35.719997, z: 13.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0.02, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -867,7 +870,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 0.1, y: 0.1, z: 0.1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 1, z: -7}
+  FollowOffset: {x: 0, y: 1.3, z: -7}
 --- !u!114 &460384953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,10 +895,10 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 100
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -920,12 +923,12 @@ Transform:
   m_GameObject: {fileID: 460384950}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 30.51, z: 13.9}
+  m_LocalPosition: {x: 0, y: 35.719997, z: 13.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.02}
 --- !u!114 &460384955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1362,12 +1365,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pools:
-  - tag: Obstacle
-    prefab: {fileID: 1823004868747972302, guid: f075f3cdd6f864d4dac88f781055e30a, type: 3}
-    size: 3
   - tag: Bullet
     prefab: {fileID: 5694905771358377352, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
-    size: 6
+    size: 9
+  - tag: Fuel
+    prefab: {fileID: 333847366613247966, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
+    size: 5
+  - tag: Turret
+    prefab: {fileID: 1593251206677673046, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
+    size: 3
+  - tag: Building
+    prefab: {fileID: 122888488204730936, guid: 5fa39f87bc6d61b42af7197a0c3033ed, type: 3}
+    size: 1000
+  - tag: Smoke
+    prefab: {fileID: 4001435552076461437, guid: 84d1bbe1d09bcf048a22edae79707d29, type: 3}
+    size: 500
 --- !u!4 &1089063280
 Transform:
   m_ObjectHideFlags: 0
@@ -2167,6 +2179,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539757089}
   m_CullTransparentMesh: 1
+--- !u!1001 &1565682461
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 967486114370455888, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c06d1eef6b9c1b04f8393fa310636e31, type: 2}
+    - target: {fileID: 1664477200915105429, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_Name
+      value: CloudSphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.8103523
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.3517246
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5904392544217951017, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2974c8b0791f69e4ebc45dde9a1dcf09, type: 3}
 --- !u!1 &1565869170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2437,9 +2522,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helicopter: {fileID: 328429114}
-  despawnDistance: 50
-  obstacleTag: Obstacle
-  spawnArea: {x: 12, y: 3, z: 0}
+  gridSize: {x: 10, y: 10}
+  spawnAreaSize: {x: 100, y: 0, z: 4}
+  despawnDistance: 75
+  buildingTag: Building
+  turretTag: Turret
+  fuelTag: Fuel
+  smokeTag: Smoke
+  bulletTag: Bullet
 --- !u!4 &1770740129
 Transform:
   m_ObjectHideFlags: 0
@@ -2680,3 +2770,4 @@ SceneRoots:
   - {fileID: 1276274313}
   - {fileID: 1770740129}
   - {fileID: 1089063280}
+  - {fileID: 1565682461}

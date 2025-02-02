@@ -13,20 +13,15 @@ public class PoolingObjects : MonoBehaviour
 {
     public static PoolingObjects Instance { get; private set; }
 
-    [Header("Pool Settings")]
     public List<Pool> pools;
-    private Dictionary<string, Queue<GameObject>> poolDictionary;
+    public Dictionary<string, Queue<GameObject>> poolDictionary;
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     private void Start()
@@ -40,30 +35,32 @@ public class PoolingObjects : MonoBehaviour
 
         foreach (Pool pool in pools)
         {
-            if (poolDictionary.ContainsKey(pool.tag))
-            {
-                Debug.LogError($"Duplicate pool tag detected: {pool.tag}. Tags must be unique.");
-                continue;
-            }
-
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             for (int i = 0; i < pool.size; i++)
             {
-                GameObject obj = CreateNewPoolObject(pool.prefab);
+                GameObject obj = Instantiate(pool.prefab);
+                obj.SetActive(false);
+                obj.transform.SetParent(transform);
                 objectPool.Enqueue(obj);
             }
 
             poolDictionary.Add(pool.tag, objectPool);
         }
     }
-
-    private GameObject CreateNewPoolObject(GameObject prefab)
+    public bool HasAvailableObject(string tag)
     {
-        GameObject obj = Instantiate(prefab);
-        obj.SetActive(false);
-        obj.transform.SetParent(transform); // Optional: Organize under the Pooling Manager
-        return obj;
+        if (poolDictionary.ContainsKey(tag))
+        {
+            foreach (var obj in poolDictionary[tag])
+            {
+                if (!obj.activeInHierarchy)
+                {
+                    return true;
+                }
+            }
+        }
+        return false; // No available objects
     }
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
@@ -74,47 +71,24 @@ public class PoolingObjects : MonoBehaviour
             return null;
         }
 
-        GameObject objectToSpawn = GetPooledObject(tag);
-
-        // Reset the object before activating it
-        ResetObject(objectToSpawn, position, rotation);
-
-        return objectToSpawn;
-    }
-
-    private GameObject GetPooledObject(string tag)
-    {
-        Queue<GameObject> objectPool = poolDictionary[tag];
-
-        if (objectPool.Count == 0)
+        if (poolDictionary[tag].Count == 0)
         {
             Debug.LogWarning($"Pool with tag {tag} is empty. Expanding pool...");
             Pool pool = pools.Find(p => p.tag == tag);
             if (pool != null)
             {
-                objectPool.Enqueue(CreateNewPoolObject(pool.prefab));
+                GameObject newObj = Instantiate(pool.prefab);
+                poolDictionary[tag].Enqueue(newObj);
             }
         }
 
-        GameObject objectToSpawn = objectPool.Dequeue();
-        objectPool.Enqueue(objectToSpawn);
+        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        objectToSpawn.SetActive(true);
+        objectToSpawn.transform.position = position;
+        objectToSpawn.transform.rotation = rotation;
 
+        poolDictionary[tag].Enqueue(objectToSpawn);
         return objectToSpawn;
-    }
-
-    private void ResetObject(GameObject obj, Vector3 position, Quaternion rotation)
-    {
-        obj.SetActive(true);
-        obj.transform.position = position;
-        obj.transform.rotation = rotation;
-
-        // Reset Rigidbody (if present) to avoid leftover velocity
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
     }
 
     public void ReturnToPool(string tag, GameObject obj)
@@ -122,14 +96,7 @@ public class PoolingObjects : MonoBehaviour
         if (poolDictionary.ContainsKey(tag))
         {
             obj.SetActive(false);
-            obj.transform.position = Vector3.zero;
-            obj.transform.rotation = Quaternion.identity;
             poolDictionary[tag].Enqueue(obj);
-        }
-        else
-        {
-            Debug.LogWarning($"Cannot return object to pool. Pool with tag {tag} doesn't exist.");
-            Destroy(obj);
         }
     }
 }
