@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Slider fuelSlider;
     public Slider healthSlider;
     public GameObject gameOverPanel;
+    public GameObject gamePlayPanel;
 
     [Header("Game Settings")]
     public float fuelConsumptionRate = 0.1f;
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Refrences")]
     public Helicopter helicopterScript;
+    public ProceduralGeneration proceduralGenerationScript;
+    public PoolingObjects poolingObjectsScript;
 
     private float score = 0f;
     private bool isGameOver = false;

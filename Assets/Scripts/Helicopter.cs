@@ -35,7 +35,6 @@ public class Helicopter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //SpawnFuel(new Vector3(Random.Range( transform.position.x - 4 , transform.position.x +4) , Random.Range(transform.position.y , transform.position.z));
         HandleInput();
         MoveForward();
         LimitMovement();
@@ -44,8 +43,8 @@ public class Helicopter : MonoBehaviour
 
     private void HandleInput()
     {
-        Vector2 input = joystick.InputVector;
-        inputDirection = new Vector3(input.x, input.y , 1f).normalized;
+        Vector2 input = joystick.GetJoystickInput();
+        inputDirection = new Vector3(input.x, -input.y , 1f).normalized;
         if (inputDirection != Vector3.zero)
         {
             targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
