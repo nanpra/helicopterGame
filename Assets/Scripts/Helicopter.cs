@@ -12,8 +12,8 @@ public class Helicopter : MonoBehaviour
 
     [Header("Impact Settings")]
     //public GameObject hitEffect;
-    public float shakeIntensity = 0.2f;
-    public float shakeDuration = 0.2f;
+    public float shakeIntensity = 0.05f;
+    public float shakeDuration = 0.15f;
     public float buildingHitDamage = 35f;
 
     [Header("Fuel Settings")]
@@ -81,13 +81,10 @@ public class Helicopter : MonoBehaviour
         //{
         //    Instantiate(hitEffect, transform.position, Quaternion.identity);
         //}
-
-        // Vibrate the phone
 #if UNITY_ANDROID || UNITY_IOS
         Handheld.Vibrate();
 #endif
 
-        // Shake the helicopter
         StartCoroutine(ShakeHelicopter());
     }
 

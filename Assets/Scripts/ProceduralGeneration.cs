@@ -107,15 +107,6 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    private void SpawnSmoke(GameObject building, float buildingHeight)
-    {
-        if (PoolingObjects.Instance.HasAvailableObject("Smoke"))
-        {
-            Vector3 smokePosition = new Vector3(building.transform.position.x, buildingHeight / 2, building.transform.position.z);
-            GameObject smoke = PoolingObjects.Instance.SpawnFromPool("Smoke", smokePosition, Quaternion.identity);
-        }
-    }
-
 
 
     private void TrySpawnTurret(GameObject building)

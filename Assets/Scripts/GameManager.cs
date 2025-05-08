@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Playing;
 
     [Header("UI References")]
-    public Text scoreText;
+    public TextMeshProUGUI scoreText;
     public Slider fuelSlider;
     public Slider healthSlider;
     public GameObject gameOverPanel;
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Settings")]
     public float fuelConsumptionRate = 0.1f;
-    public float scoreIncreaseRate = 10f;
+    public float scoreIncreaseRate = 3f;
 
     [Header("Refrences")]
     public Helicopter helicopterScript;
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == GameState.Playing)
         {
-            //UpdateScore();
+            UpdateScore();
             DecreaseFuel();
         }
 
@@ -55,14 +56,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //private void UpdateScore()
-    //{
-    //    score += scoreIncreaseRate * Time.deltaTime;
-    //    if (scoreText != null)
-    //    {
-    //        scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
-    //    }
-    //}
+    private void UpdateScore()
+    {
+        score += scoreIncreaseRate * Time.deltaTime;
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
+        }
+    }
+
     private void DecreaseFuel()
     {
         fuelSlider.value -= fuelConsumptionRate * Time.deltaTime;
@@ -74,6 +76,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        helicopterScript.enabled = false;
         isGameOver = true;
         CurrentState = GameState.GameOver;
 
@@ -85,11 +88,22 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        helicopterScript.enabled = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         CurrentState = GameState.Playing;
         isGameOver = false;
         score = 0;
         fuelSlider.value = 1;
         gameOverPanel.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        Application.LoadLevel(1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
