@@ -176,9 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'GAME KALAS BC!!!
-
-    get better bot...'
+  m_text: Game Over!!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 8b29aaa3eec7468097ff07adfcf29ac9, type: 2}
@@ -1209,7 +1207,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -598}
+  m_AnchoredPosition: {x: 0, y: -354}
   m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863127848
@@ -1808,13 +1806,13 @@ MonoBehaviour:
   pools:
   - tag: Bullet
     prefab: {fileID: 5694905771358377352, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
-    size: 9
+    size: 6
   - tag: Fuel
-    prefab: {fileID: 333847366613247966, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
+    prefab: {fileID: 2269232342775298833, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
     size: 5
   - tag: Turret
     prefab: {fileID: 1593251206677673046, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
-    size: 0
+    size: 3
   - tag: Building
     prefab: {fileID: 122888488204730936, guid: 5fa39f87bc6d61b42af7197a0c3033ed, type: 3}
     size: 500

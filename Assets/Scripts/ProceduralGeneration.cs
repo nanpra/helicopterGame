@@ -16,7 +16,7 @@ public class ProceduralGeneration : MonoBehaviour
     public string smokeTag = "Smoke";
     public string bulletTag = "Bullet";
 
-    private HashSet<Vector3> occupiedPositions = new HashSet<Vector3>();
+    private List<Vector3> occupiedPositions = new List<Vector3>();
     private List<GameObject> activeObjects = new List<GameObject>();
 
     private float nextSpawnZ = 0f;
@@ -72,9 +72,9 @@ public class ProceduralGeneration : MonoBehaviour
         // Ensure position is not occupied by another building
         int maxAttempts = 10; // Prevents infinite loops
         int attempts = 0;
-        while (occupiedPositions.Contains(position) && attempts < maxAttempts)
+        while (!occupiedPositions.Contains(position) && attempts < maxAttempts)
         {
-            posX = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
+            posX = GameManager.Instance.helicopterScript.transform.position.x + Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
             position = new Vector3(posX, 0, posZ);
             attempts++;
         }
@@ -92,15 +92,16 @@ public class ProceduralGeneration : MonoBehaviour
             float buildingHeight = Random.Range(0.75f, 1f);
             if (tag == "Building")
             {
-                GameObject yAxisScale = obj;
+                //GameObject yAxisScale = obj;
                 Vector3 height = obj.transform.localScale;
                 height.y *= buildingHeight;
                 obj.transform.localScale = height;
                 obj.transform.position = new Vector3(position.x, buildingHeight / 2, position.z);
                 //SpawnSmoke(obj, buildingHeight);
                 //activeObjects.Add(obj);
-                TrySpawnPickup(obj);
-                TrySpawnTurret(obj);
+                //TrySpawnPickup(obj);
+                //TrySpawnTurret(obj);
+                TrySpawnPickupOrTurret(obj);
             }
 
             activeObjects.Add(obj);
@@ -142,12 +143,6 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    //private void SpawnSmoke(Vector3 spawnPosition)
-    //{
-    //    Vector3 smokePosition = spawnPosition + new Vector3(0, 5f, 0);
-    //    PoolingObjects.Instance.SpawnFromPool(smokeTag, smokePosition, Quaternion.identity);
-    //}
-
     private void DespawnObjects()
     {
         for (int i = activeObjects.Count - 1; i >= 0; i--)
@@ -167,6 +162,61 @@ public class ProceduralGeneration : MonoBehaviour
 
                 activeObjects.RemoveAt(i);
             }
+        }
+    }
+
+    private Dictionary<Transform, string> buildingDebugInfo = new Dictionary<Transform, string>();
+
+
+    private void TrySpawnPickupOrTurret(GameObject building)
+    {
+        Transform buildingTransform = building.transform;
+        float chance = Random.value;
+
+        if (chance < 0.3f && PoolingObjects.Instance.HasAvailableObject(turretTag))
+        {
+            Vector3 turretPosition = GetBuildingTopPosition(building);
+            GameObject turret = PoolingObjects.Instance.SpawnFromPool(turretTag, turretPosition, Quaternion.identity);
+            activeObjects.Add(turret);
+            buildingDebugInfo[buildingTransform] = "Turret";
+        }
+        else if (chance >= 0.3f && chance < 0.8f && PoolingObjects.Instance.HasAvailableObject(fuelTag))
+        {
+            float randomheightPos = Random.Range(5, 18);
+            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos;
+            GameObject pickup = PoolingObjects.Instance.SpawnFromPool(fuelTag, pickupPosition, Quaternion.identity);
+            activeObjects.Add(pickup);
+            buildingDebugInfo[buildingTransform] = "Fuel";
+        }
+        else
+        {
+            buildingDebugInfo[buildingTransform] = "None";
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (buildingDebugInfo == null) return;
+
+        foreach (var entry in buildingDebugInfo)
+        {
+            Transform building = entry.Key;
+            string type = entry.Value;
+
+            switch (type)
+            {
+                case "Turret":
+                    Gizmos.color = Color.red;
+                    break;
+                case "Pickup":
+                    Gizmos.color = Color.green;
+                    break;
+                case "None":
+                    Gizmos.color = Color.gray;
+                    break;
+            }
+
+            Gizmos.DrawSphere(GetBuildingTopPosition(building.gameObject) + Vector3.up * 2f, 0.3f);
         }
     }
 }

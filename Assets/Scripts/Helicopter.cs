@@ -145,7 +145,7 @@ public class Helicopter : MonoBehaviour
 
     private void PickupFuel(GameObject fuel)
     {
-        currentFuel = Mathf.Clamp(currentFuel + fuelPickupAmount, 0, maxFuel);
+        GameManager.Instance.fuelSlider.value += fuelPickupAmount/100;
         PoolingObjects.Instance.ReturnToPool("Fuel", fuel);
     }
 
