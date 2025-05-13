@@ -320,7 +320,6 @@ GameObject:
   - component: {fileID: 4489189075890536152}
   - component: {fileID: 4165422413230321024}
   - component: {fileID: 5256443564319139434}
-  - component: {fileID: 2652247132234375810}
   m_Layer: 0
   m_Name: FuelPickUp
   m_TagString: Fuel
@@ -419,17 +418,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &2652247132234375810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4961240084273925227}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1792416edfbceb64abcbf1b29842af9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floatAmplitude: 0.01
-  floatFrequency: 1

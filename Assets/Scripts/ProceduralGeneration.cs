@@ -13,7 +13,7 @@ public class ProceduralGeneration : MonoBehaviour
     public string buildingTag = "Building";
     public string turretTag = "Turret";
     public string fuelTag = "Fuel";
-    public string smokeTag = "Smoke";
+    public string healthTag = "Health";
     public string bulletTag = "Bullet";
 
     private List<Vector3> occupiedPositions = new List<Vector3>();
@@ -92,40 +92,13 @@ public class ProceduralGeneration : MonoBehaviour
             float buildingHeight = Random.Range(0.75f, 1f);
             if (tag == "Building")
             {
-                //GameObject yAxisScale = obj;
                 Vector3 height = obj.transform.localScale;
                 height.y *= buildingHeight;
                 obj.transform.localScale = height;
                 obj.transform.position = new Vector3(position.x, buildingHeight / 2, position.z);
-                //SpawnSmoke(obj, buildingHeight);
-                //activeObjects.Add(obj);
-                //TrySpawnPickup(obj);
-                //TrySpawnTurret(obj);
-                TrySpawnPickupOrTurret(obj);
+                TrySpawnElement(obj);
             }
 
-            activeObjects.Add(obj);
-        }
-    }
-
-
-
-    private void TrySpawnTurret(GameObject building)
-    {
-        if (Random.value < 0.3f  &&  PoolingObjects.Instance.HasAvailableObject(turretTag)) // 30% chance to spawn a turret
-        {
-            Vector3 turretPosition = GetBuildingTopPosition(building);
-            GameObject obj = PoolingObjects.Instance.SpawnFromPool(turretTag, turretPosition, Quaternion.identity);
-            activeObjects.Add(obj);
-        }
-    }
-
-    private void TrySpawnPickup(GameObject building)
-    {
-        if (Random.value < 0.5f  &&  PoolingObjects.Instance.HasAvailableObject(fuelTag)) // 50% chance to spawn a pickup
-        {
-            Vector3 pickupPosition = GetBuildingTopPosition(building);
-            GameObject obj = PoolingObjects.Instance.SpawnFromPool(fuelTag, pickupPosition, Quaternion.identity);
             activeObjects.Add(obj);
         }
     }
@@ -157,8 +130,8 @@ public class ProceduralGeneration : MonoBehaviour
                     PoolingObjects.Instance.ReturnToPool(turretTag, obj);
                 else if (obj.CompareTag(fuelTag))
                     PoolingObjects.Instance.ReturnToPool(fuelTag, obj);
-                //else if (obj.CompareTag(smokeTag))
-                //    PoolingObjects.Instance.ReturnToPool(smokeTag, obj);
+                else if (obj.CompareTag(healthTag))
+                    PoolingObjects.Instance.ReturnToPool(healthTag, obj);
 
                 activeObjects.RemoveAt(i);
             }
@@ -167,26 +140,35 @@ public class ProceduralGeneration : MonoBehaviour
 
     private Dictionary<Transform, string> buildingDebugInfo = new Dictionary<Transform, string>();
 
-
-    private void TrySpawnPickupOrTurret(GameObject building)
+    private void TrySpawnElement(GameObject building)
     {
         Transform buildingTransform = building.transform;
         float chance = Random.value;
 
-        if (chance < 0.3f && PoolingObjects.Instance.HasAvailableObject(turretTag))
+        if (chance < 0.25f && PoolingObjects.Instance.HasAvailableObject(turretTag))
         {
             Vector3 turretPosition = GetBuildingTopPosition(building);
             GameObject turret = PoolingObjects.Instance.SpawnFromPool(turretTag, turretPosition, Quaternion.identity);
             activeObjects.Add(turret);
-            buildingDebugInfo[buildingTransform] = "Turret";
+            buildingDebugInfo[buildingTransform] = turretTag;
         }
-        else if (chance >= 0.3f && chance < 0.8f && PoolingObjects.Instance.HasAvailableObject(fuelTag))
+        else if (chance >= 0.25f && chance < 0.55f && PoolingObjects.Instance.HasAvailableObject(fuelTag))
         {
+            float randomZaxisPos = Random.Range(0, 15);
             float randomheightPos = Random.Range(5, 18);
-            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos;
+            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos + Vector3.forward * randomZaxisPos;
             GameObject pickup = PoolingObjects.Instance.SpawnFromPool(fuelTag, pickupPosition, Quaternion.identity);
             activeObjects.Add(pickup);
-            buildingDebugInfo[buildingTransform] = "Fuel";
+            buildingDebugInfo[buildingTransform] = fuelTag;
+        }
+        else if (chance >= 0.55f && chance < 0.85f && PoolingObjects.Instance.HasAvailableObject(healthTag))
+        {
+            float randomZaxisPos = Random.Range(0, 15);
+            float randomheightPos = Random.Range(5, 18);
+            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos + Vector3.forward * randomZaxisPos;
+            GameObject pickup = PoolingObjects.Instance.SpawnFromPool(healthTag, pickupPosition, Quaternion.identity);
+            activeObjects.Add(pickup);
+            buildingDebugInfo[buildingTransform] = healthTag;
         }
         else
         {

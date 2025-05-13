@@ -1809,13 +1809,16 @@ MonoBehaviour:
     size: 6
   - tag: Fuel
     prefab: {fileID: 2269232342775298833, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
-    size: 5
+    size: 3
   - tag: Turret
     prefab: {fileID: 1593251206677673046, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
     size: 3
   - tag: Building
     prefab: {fileID: 122888488204730936, guid: 5fa39f87bc6d61b42af7197a0c3033ed, type: 3}
     size: 500
+  - tag: Health
+    prefab: {fileID: 3581591018745644854, guid: d15b678ab2e6b174bbffc50e52523059, type: 3}
+    size: 3
 --- !u!4 &1089063280
 Transform:
   m_ObjectHideFlags: 0
@@ -2023,10 +2026,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e58f852d3d046542a8ccffe23711a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 8
-  rotationSpeed: 0.5
-  tiltAmount: 0.2
-  upwardForce: 100
+  forwardSpeed: 11
+  rotationSpeed: 0.55
+  tiltAmount: 0.25
+  upwardForce: 120
   shakeIntensity: 0.025
   shakeDuration: 0.15
   buildingHitDamage: 35
@@ -3248,7 +3251,7 @@ MonoBehaviour:
   buildingTag: Building
   turretTag: Turret
   fuelTag: Fuel
-  smokeTag: Smoke
+  healthTag: Health
   bulletTag: Bullet
 --- !u!4 &1770740129
 Transform:

@@ -107,21 +107,6 @@ public class Helicopter : MonoBehaviour
         transform.position = originalPosition; // Reset position after shake
     }
 
-    //private void DownwardForce()
-    //{
-    //    Vector3 gravityForce = new Vector3(0, -downwardForce, 0);
-    //    rb.AddForce(gravityForce);
-    //}
-
-    //public void GasPressed()
-    //{
-    //    if(!gasOver)
-    //    {
-    //        Vector3 force = new Vector3(0, upwardForce, 0);
-    //        rb.AddForce(force);
-    //    }
-    //}
-
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Building"))
@@ -137,7 +122,7 @@ public class Helicopter : MonoBehaviour
         {
             PickupFuel(other.gameObject);
         }
-        else if (other.CompareTag("Pickup"))
+        else if (other.CompareTag("Health"))
         {
             PickupObject(other.gameObject);
         }
@@ -153,15 +138,6 @@ public class Helicopter : MonoBehaviour
     {
         // Handle other pickups (e.g., coins, power-ups)
         PoolingObjects.Instance.ReturnToPool("Pickup", pickup);
-    }
-
-    public void SpawnFuel(Vector3 spawnPosition)
-    {
-        GameObject fuel = PoolingObjects.Instance.SpawnFromPool("Fuel", spawnPosition, Quaternion.identity);
-        if (fuel == null)
-        {
-            Debug.LogWarning("Fuel could not be spawned!");
-            return;
-        }
+        GameManager.Instance.healthSlider.value += 0.2f;
     }
 }

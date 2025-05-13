@@ -9,6 +9,7 @@ TagManager:
   - Fuel
   - Smoke
   - Turret
+  - Health
   layers:
   - Default
   - TransparentFX
