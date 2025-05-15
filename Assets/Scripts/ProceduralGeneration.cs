@@ -176,29 +176,29 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (buildingDebugInfo == null) return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (buildingDebugInfo == null) return;
 
-        foreach (var entry in buildingDebugInfo)
-        {
-            Transform building = entry.Key;
-            string type = entry.Value;
+    //    foreach (var entry in buildingDebugInfo)
+    //    {
+    //        Transform building = entry.Key;
+    //        string type = entry.Value;
 
-            switch (type)
-            {
-                case "Turret":
-                    Gizmos.color = Color.red;
-                    break;
-                case "Pickup":
-                    Gizmos.color = Color.green;
-                    break;
-                case "None":
-                    Gizmos.color = Color.gray;
-                    break;
-            }
+    //        switch (type)
+    //        {
+    //            case "Turret":
+    //                Gizmos.color = Color.red;
+    //                break;
+    //            case "Pickup":
+    //                Gizmos.color = Color.green;
+    //                break;
+    //            case "None":
+    //                Gizmos.color = Color.gray;
+    //                break;
+    //        }
 
-            Gizmos.DrawSphere(GetBuildingTopPosition(building.gameObject) + Vector3.up * 2f, 0.3f);
-        }
-    }
+    //        Gizmos.DrawSphere(GetBuildingTopPosition(building.gameObject) + Vector3.up * 2f, 0.3f);
+    //    }
+    //}
 }

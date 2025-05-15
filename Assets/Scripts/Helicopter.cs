@@ -127,17 +127,29 @@ public class Helicopter : MonoBehaviour
             PickupObject(other.gameObject);
         }
     }
+    [SerializeField] private GameObject flyingSparklePrefabForFuel;
+    [SerializeField] private GameObject flyingSparklePrefabForHealth;
+    [SerializeField] private RectTransform healthBarTargetUI;
+    [SerializeField] private RectTransform fuelBarTargetUI;
 
     private void PickupFuel(GameObject fuel)
     {
         GameManager.Instance.fuelSlider.value += fuelPickupAmount/100;
         PoolingObjects.Instance.ReturnToPool("Fuel", fuel);
+
+        GameObject sparkle = Instantiate(flyingSparklePrefabForFuel, fuel.transform.position, Quaternion.identity);
+        sparkle.GetComponent<SparkleEffect>().Initialize(fuelBarTargetUI);
     }
+
 
     private void PickupObject(GameObject pickup)
     {
         // Handle other pickups (e.g., coins, power-ups)
-        PoolingObjects.Instance.ReturnToPool("Pickup", pickup);
+        PoolingObjects.Instance.ReturnToPool("Health", pickup);
         GameManager.Instance.healthSlider.value += 0.2f;
+
+        // Spawn sparkle at pickup location
+        GameObject sparkle = Instantiate(flyingSparklePrefabForHealth, pickup.transform.position, Quaternion.identity);
+        sparkle.GetComponent<SparkleEffect>().Initialize(healthBarTargetUI);
     }
 }
