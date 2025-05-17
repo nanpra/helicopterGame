@@ -28,6 +28,9 @@ public class Helicopter : MonoBehaviour
     private Quaternion targetRotation;
     private Rigidbody rb;
 
+    public Animator propellerAnim;
+
+    
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -35,10 +38,13 @@ public class Helicopter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        HandleInput();
-        MoveForward();
-        LimitMovement();
-        RotateTowardsInput();
+        if(GameManager.Instance.CurrentState == GameState.Playing)
+        {
+            HandleInput();
+            MoveForward();
+            LimitMovement();
+            RotateTowardsInput();
+        }
     }
 
     private void HandleInput()

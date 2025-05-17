@@ -1,13 +1,16 @@
+using System.Collections;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+public enum GameState { Playing, GameOver, Idle }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public enum GameState { Playing, GameOver }
-    public GameState CurrentState { get; private set; } = GameState.Playing;
+    public GameState CurrentState;
 
     [Header("UI References")]
     public TextMeshProUGUI scoreText;
@@ -29,19 +32,46 @@ public class GameManager : MonoBehaviour
     private bool isGameOver = false;
     public bool gasOver;
 
+    [Header("GameStart Refs")]
+    public PlayableDirector takeOffTimeline;
+    public ProceduralGeneration worldGenerator;
+    public CinemachineCamera mainTPPCam;
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
-    }
 
+        GameplayEvents.takeOff.AddListener(StartGameOnTap);
+    }
+    public void StartGameOnTap()
+    {
+        StartCoroutine(TakeOff());
+    }
+    private IEnumerator TakeOff()
+    {
+        takeOffTimeline.Play();
+        mainTPPCam.Priority = 5;
+        helicopterScript.propellerAnim.SetBool("isTakingOff", true);
+        yield return new WaitUntil(() => takeOffTimeline.state == PlayState.Paused);
+        StartFlying();
+    }
+    private void StartFlying()
+    {
+        GameplayEvents.startFlying?.Invoke();
+        helicopterScript.propellerAnim.SetBool("isFlying", true);
+
+        CurrentState = GameState.Playing;
+        helicopterScript.propellerAnim.speed = 1;
+        worldGenerator.enabled = true;
+    }
     private void Update()
     {
         if (CurrentState == GameState.Playing)
@@ -88,13 +118,14 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        helicopterScript.enabled = true;
+        /*helicopterScript.enabled = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         CurrentState = GameState.Playing;
         isGameOver = false;
         score = 0;
         fuelSlider.value = 1;
-        gameOverPanel.SetActive(false);
+        gameOverPanel.SetActive(false);*/
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void StartGame()
@@ -105,5 +136,10 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void OnDestroy()
+    {
+        GameplayEvents.takeOff.RemoveListener(StartGameOnTap);
     }
 }
