@@ -13,6 +13,7 @@ public class Turret : MonoBehaviour
     [Header("Bullet Settings")]
     public Transform firePoint;
     public float bulletSpeed = 20f;
+    public float bulletDamage = 10f;
     public float leadTime = 0.5f;
     public float burstIntervalTime = 3f;
 
@@ -33,7 +34,7 @@ public class Turret : MonoBehaviour
 
         float distanceToHelicopter = Vector3.Distance(transform.position, helicopterTransform.position);
         bool helicopterInRange = distanceToHelicopter <= detectionRange;
-        bool helicopterNotCrossed = helicopterTransform.position.z + 6 <= transform.position.z;
+        bool helicopterNotCrossed = helicopterTransform.position.z + 2 <= transform.position.z;
 
         if (helicopterInRange && helicopterNotCrossed)
         {

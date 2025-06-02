@@ -10,6 +10,7 @@ TagManager:
   - Smoke
   - Turret
   - Health
+  - Laser
   layers:
   - Default
   - TransparentFX

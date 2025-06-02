@@ -16,7 +16,7 @@ public class Bulet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.GetComponent<Helicopter>().TakeDamage();
+            other.GetComponent<Helicopter>().TakeDamage(0.1f);
             ReturnToPool();
         }
     }

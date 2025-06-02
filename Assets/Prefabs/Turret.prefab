@@ -49,12 +49,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretHead: {fileID: 2830884056709181239}
   rotationSpeed: 5
-  detectionRange: 20
+  detectionRange: 25
   fireRate: 1
   bulletTag: Bullet
   firePoint: {fileID: 5162077457108154000}
   bulletSpeed: 25
-  leadTime: 0.1
+  leadTime: 0.12
   burstIntervalTime: 100
 --- !u!1 &1706947966527562104
 GameObject:

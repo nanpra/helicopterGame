@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9155335853321557317}
   m_Layer: 0
   m_Name: Helicopter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +35,7 @@ Transform:
   m_Children:
   - {fileID: 6742315080324503214}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0.2999714, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -113.7, z: 0}
 --- !u!65 &1769517891673275848
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70,19 +70,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 11
-  rotationSpeed: 0.55
-  tiltAmount: 0.25
-  upwardForce: 120
+  rotationSpeed: 1
+  tiltAmount: 0.35
+  upwardForce: 150
   shakeIntensity: 0.025
   shakeDuration: 0.15
   buildingHitDamage: 35
   maxFuel: 100
   currentFuel: 100
   fuelPickupAmount: 20
+  explosionEffect: {fileID: 7938384439400024400, guid: b6e54acc881a03c4a9719b161a25a3e3, type: 3}
+  parts:
+  - {fileID: 6198913051236560368}
+  - {fileID: 2468170964244134855}
+  - {fileID: 2443113930323641741}
   joystick: {fileID: 0}
   propellerAnim: {fileID: 4268106777299473267}
-  flyingSparklePrefabForFuel: {fileID: 6073891735194678028, guid: 064c608c3a271334299e1fa22913842f, type: 3}
-  flyingSparklePrefabForHealth: {fileID: 1449242181322416601, guid: 052d5f6cf7d3ebc44bba49fbe653f9a8, type: 3}
+  flyingSparklePrefabForFuel: {fileID: 0}
+  flyingSparklePrefabForHealth: {fileID: 0}
   healthBarTargetUI: {fileID: 0}
   fuelBarTargetUI: {fileID: 0}
 --- !u!54 &4057173459640033144
@@ -206,9 +211,18 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6198913051236560368}
     - targetCorrespondingSourceObject: {fileID: 100004, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4268106777299473267}
+    - targetCorrespondingSourceObject: {fileID: 100004, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2468170964244134855}
+    - targetCorrespondingSourceObject: {fileID: 100006, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2443113930323641741}
   m_SourcePrefab: {fileID: 100100000, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
 --- !u!4 &6742315080324503214 stripped
 Transform:
@@ -242,3 +256,94 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!54 &2468170964244134855
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6742315080324991624}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!1 &6742315080324991626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100006, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
+  m_PrefabInstance: {fileID: 6742315080324893740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2443113930323641741
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6742315080324991626}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!1 &6742315080324991628 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 17d12b7570a4eff4eaaa2562f61e7fda, type: 3}
+  m_PrefabInstance: {fileID: 6742315080324893740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &6198913051236560368
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6742315080324991628}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

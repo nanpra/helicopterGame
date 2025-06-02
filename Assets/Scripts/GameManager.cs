@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -80,9 +81,18 @@ public class GameManager : MonoBehaviour
             DecreaseFuel();
         }
 
-        if (fuelSlider.value <= 0 && !isGameOver  || healthSlider.value <= 0)
+        if (healthSlider.value <= 0 && !helicopterScript.isDestroyed)
         {
-            GameOver();
+            helicopterScript.DestroyHelicopter(helicopterScript.transform);
+            Invoke("GameOver" ,3);
+        }
+
+        if(fuelSlider.value <= 0 && gasOver)
+        {
+            helicopterScript.forwardSpeed = 0;
+            helicopterScript.rb.useGravity = true;
+            helicopterScript.rb.AddTorque(Random.insideUnitSphere * 5f);
+            Invoke("GameOver", 2);
         }
     }
 

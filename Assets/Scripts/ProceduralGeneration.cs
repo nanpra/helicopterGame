@@ -15,6 +15,7 @@ public class ProceduralGeneration : MonoBehaviour
     public string fuelTag = "Fuel";
     public string healthTag = "Health";
     public string bulletTag = "Bullet";
+    public string laserTag = "Laser";
 
     private List<Vector3> occupiedPositions = new List<Vector3>();
     private List<GameObject> activeObjects = new List<GameObject>();
@@ -96,7 +97,8 @@ public class ProceduralGeneration : MonoBehaviour
                 height.y *= buildingHeight;
                 obj.transform.localScale = height;
                 obj.transform.position = new Vector3(position.x, buildingHeight / 2, position.z);
-                TrySpawnElement(obj);
+                if(helicopter.position.z > 50)
+                    TrySpawnElement(obj);
             }
 
             activeObjects.Add(obj);
@@ -132,12 +134,13 @@ public class ProceduralGeneration : MonoBehaviour
                     PoolingObjects.Instance.ReturnToPool(fuelTag, obj);
                 else if (obj.CompareTag(healthTag))
                     PoolingObjects.Instance.ReturnToPool(healthTag, obj);
+                else if (obj.CompareTag(laserTag))
+                    PoolingObjects.Instance.ReturnToPool(laserTag, obj);
 
                 activeObjects.RemoveAt(i);
             }
         }
     }
-
     private Dictionary<Transform, string> buildingDebugInfo = new Dictionary<Transform, string>();
 
     private void TrySpawnElement(GameObject building)
@@ -145,36 +148,40 @@ public class ProceduralGeneration : MonoBehaviour
         Transform buildingTransform = building.transform;
         float chance = Random.value;
 
-        if (chance < 0.25f && PoolingObjects.Instance.HasAvailableObject(turretTag))
+        string selectedTag = null;
+        Vector3 spawnPosition = GetBuildingTopPosition(building);
+
+        if (chance < 0.15f && PoolingObjects.Instance.HasAvailableObject(turretTag))
         {
-            Vector3 turretPosition = GetBuildingTopPosition(building);
-            GameObject turret = PoolingObjects.Instance.SpawnFromPool(turretTag, turretPosition, Quaternion.identity);
-            activeObjects.Add(turret);
-            buildingDebugInfo[buildingTransform] = turretTag;
+            selectedTag = turretTag;
         }
-        else if (chance >= 0.25f && chance < 0.55f && PoolingObjects.Instance.HasAvailableObject(fuelTag))
+        else if (chance < 0.3f && PoolingObjects.Instance.HasAvailableObject(laserTag) && helicopter.position.z > 200)
         {
-            float randomZaxisPos = Random.Range(0, 15);
-            float randomheightPos = Random.Range(5, 18);
-            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos + Vector3.forward * randomZaxisPos;
-            GameObject pickup = PoolingObjects.Instance.SpawnFromPool(fuelTag, pickupPosition, Quaternion.identity);
-            activeObjects.Add(pickup);
-            buildingDebugInfo[buildingTransform] = fuelTag;
+            selectedTag = laserTag;
         }
-        else if (chance >= 0.55f && chance < 0.85f && PoolingObjects.Instance.HasAvailableObject(healthTag))
+        else if (chance < 0.6f && PoolingObjects.Instance.HasAvailableObject(fuelTag) && helicopter.position.z > 150)
         {
-            float randomZaxisPos = Random.Range(0, 15);
-            float randomheightPos = Random.Range(5, 18);
-            Vector3 pickupPosition = GetBuildingTopPosition(building) + Vector3.up * randomheightPos + Vector3.forward * randomZaxisPos;
-            GameObject pickup = PoolingObjects.Instance.SpawnFromPool(healthTag, pickupPosition, Quaternion.identity);
-            activeObjects.Add(pickup);
-            buildingDebugInfo[buildingTransform] = healthTag;
+            selectedTag = fuelTag;
+            spawnPosition += Vector3.up * Random.Range(5f, 18f) + Vector3.forward * Random.Range(0f, 15f);
+        }
+        else if (chance < 0.9f && PoolingObjects.Instance.HasAvailableObject(healthTag))
+        {
+            selectedTag = healthTag;
+            spawnPosition += Vector3.up * Random.Range(5f, 18f) + Vector3.forward * Random.Range(0f, 15f);
+        }
+
+        if (!string.IsNullOrEmpty(selectedTag))
+        {
+            GameObject element = PoolingObjects.Instance.SpawnFromPool(selectedTag, spawnPosition, Quaternion.identity);
+            activeObjects.Add(element);
+            buildingDebugInfo[buildingTransform] = selectedTag;
         }
         else
         {
             buildingDebugInfo[buildingTransform] = "None";
         }
     }
+
 
     //private void OnDrawGizmos()
     //{

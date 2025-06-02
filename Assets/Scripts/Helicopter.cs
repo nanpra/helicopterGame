@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,19 +22,29 @@ public class Helicopter : MonoBehaviour
     public float currentFuel = 100f;
     public float fuelPickupAmount = 20f;
 
-    [Header("Joystick Reference")]
+    [Header("DestructionHelicopter")]
+    public GameObject explosionEffect;
+    public GameObject fireTrailPrefab;
+    public bool isDestroyed = false;
+    public Rigidbody[] parts;
+
+    [Header("References")]
     public Joystick joystick;
+    private CinemachineImpulseSource cinemachineImpulseSource;
+    public CinemachineCamera deathCam;
 
     private Vector3 inputDirection;
     private Quaternion targetRotation;
-    private Rigidbody rb;
+    [HideInInspector] public Rigidbody rb;
 
     public Animator propellerAnim;
+    
 
     
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        cinemachineImpulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     private void FixedUpdate()
@@ -79,9 +90,9 @@ public class Helicopter : MonoBehaviour
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float damageValue)
     {
-        GameManager.Instance.healthSlider.value -= 0.1f;
+        GameManager.Instance.healthSlider.value -= damageValue;
         // Instantiate hit effect
         //if (hitEffect != null)
         //{
@@ -157,5 +168,52 @@ public class Helicopter : MonoBehaviour
         // Spawn sparkle at pickup location
         GameObject sparkle = Instantiate(flyingSparklePrefabForHealth, pickup.transform.position, Quaternion.identity);
         sparkle.GetComponent<SparkleEffect>().Initialize(healthBarTargetUI);
+    }
+
+
+
+    public void DestroyHelicopter(Transform explosionPos)
+    {
+        deathCam.gameObject.SetActive(true);
+        cinemachineImpulseSource.GenerateImpulse();
+        forwardSpeed = 0;
+        isDestroyed = true;
+
+        // Explosion VFX
+        if (explosionEffect != null && explosionPos != null)
+        {
+            Instantiate(explosionEffect, explosionPos.position, Quaternion.identity);
+        }
+
+        //slow motion
+        Time.timeScale = 0.3f;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        StartCoroutine(RestoreTime());
+        foreach (var rb in parts)
+        {
+            rb.isKinematic = false;
+            rb.AddExplosionForce(100f, explosionPos.position, 20f, 5f);
+
+            if (fireTrailPrefab != null)
+            {
+                GameObject trail = Instantiate(fireTrailPrefab, rb.transform.position, Quaternion.identity);
+                trail.transform.SetParent(rb.transform);
+            }
+        }
+
+
+        //// Disable control scripts
+        //foreach (var script in GetComponents<MonoBehaviour>())
+        //{
+        //    if (script != this)
+        //        script.enabled = false;
+        //}
+    }
+
+    IEnumerator RestoreTime()
+    {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+        yield return new WaitForSeconds(2.5f);
     }
 }

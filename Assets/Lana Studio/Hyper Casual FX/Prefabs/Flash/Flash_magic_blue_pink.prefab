@@ -4958,7 +4958,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6073891735194678028}
   serializedVersion: 8
-  lengthInSec: 2
+  lengthInSec: 10
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 3
@@ -9842,7 +9842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiTarget: {fileID: 0}
-  speed: 1
+  speed: 5
   onArrivalEffect: {fileID: 6236425827700613666}
 --- !u!1 &7070507448074371135
 GameObject:

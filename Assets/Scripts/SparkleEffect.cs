@@ -13,14 +13,14 @@ public class SparkleEffect : MonoBehaviour
     public void Initialize(RectTransform targetUI)
     {
         uiTarget = targetUI;
-        targetWorldPos = uiTarget.transform.position;
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, uiTarget.position);
+        targetWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, Camera.main.nearClipPlane + 1f));
         initialized = true;
     }
 
     void Update()
     {
         if (!initialized) return;
-
         transform.position = Vector3.MoveTowards(transform.position, targetWorldPos, speed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetWorldPos) < 0.1f)
