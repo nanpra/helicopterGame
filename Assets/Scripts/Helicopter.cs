@@ -23,6 +23,7 @@ public class Helicopter : MonoBehaviour
     public float fuelPickupAmount = 20f;
 
     [Header("DestructionHelicopter")]
+    public GameObject smokeEffect;
     public GameObject explosionEffect;
     public GameObject fireTrailPrefab;
     public bool isDestroyed = false;
@@ -33,10 +34,16 @@ public class Helicopter : MonoBehaviour
     private CinemachineImpulseSource cinemachineImpulseSource;
     public CinemachineCamera deathCam;
 
+    //remaining
+
+    [SerializeField] private GameObject flyingSparklePrefabForFuel;
+    [SerializeField] private GameObject flyingSparklePrefabForHealth;
+    [SerializeField] private RectTransform healthBarTargetUI;
+    [SerializeField] private RectTransform fuelBarTargetUI;
+
     private Vector3 inputDirection;
     private Quaternion targetRotation;
     [HideInInspector] public Rigidbody rb;
-
     public Animator propellerAnim;
     
 
@@ -89,15 +96,21 @@ public class Helicopter : MonoBehaviour
             transform.localRotation *= Quaternion.Euler(0f, 0f, tilt * Mathf.Sign(inputDirection.x));
         }
     }
+    public bool halfHealth;
 
     public void TakeDamage(float damageValue)
     {
+        halfHealth = false;
         GameManager.Instance.healthSlider.value -= damageValue;
-        // Instantiate hit effect
-        //if (hitEffect != null)
-        //{
-        //    Instantiate(hitEffect, transform.position, Quaternion.identity);
-        //}
+        if (GameManager.Instance.healthSlider.value <= 0.6f)
+        {
+            halfHealth = true;
+            smokeEffect.SetActive(true);
+            GameObject smokePrefab = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+            smokePrefab.transform.SetParent(transform);
+        }
+
+
 #if UNITY_ANDROID || UNITY_IOS
         Handheld.Vibrate();
 #endif
@@ -135,19 +148,19 @@ public class Helicopter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Fuel"))
-        {
+        if (other.CompareTag("FuelTank"))
             PickupFuel(other.gameObject);
-        }
-        else if (other.CompareTag("Health"))
-        {
+        else if (other.CompareTag("HealthTank"))
             PickupObject(other.gameObject);
-        }
+        else if (other.CompareTag("Ballon"))
+            BlastBalloon(other.gameObject);
     }
-    [SerializeField] private GameObject flyingSparklePrefabForFuel;
-    [SerializeField] private GameObject flyingSparklePrefabForHealth;
-    [SerializeField] private RectTransform healthBarTargetUI;
-    [SerializeField] private RectTransform fuelBarTargetUI;
+    public GameObject ballonBlasteffect;
+    private void BlastBalloon(GameObject ballon)
+    {
+        Instantiate(ballonBlasteffect , ballon.transform.position, Quaternion.identity);
+        Destroy(ballon);
+    }
 
     private void PickupFuel(GameObject fuel)
     {
@@ -161,11 +174,12 @@ public class Helicopter : MonoBehaviour
 
     private void PickupObject(GameObject pickup)
     {
-        // Handle other pickups (e.g., coins, power-ups)
+        if (!halfHealth)
+            smokeEffect.gameObject.SetActive(false);
+
         PoolingObjects.Instance.ReturnToPool("Health", pickup);
         GameManager.Instance.healthSlider.value += 0.2f;
 
-        // Spawn sparkle at pickup location
         GameObject sparkle = Instantiate(flyingSparklePrefabForHealth, pickup.transform.position, Quaternion.identity);
         sparkle.GetComponent<SparkleEffect>().Initialize(healthBarTargetUI);
     }
@@ -174,9 +188,11 @@ public class Helicopter : MonoBehaviour
 
     public void DestroyHelicopter(Transform explosionPos)
     {
+        transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetChild(1).gameObject.SetActive(true);
         deathCam.gameObject.SetActive(true);
         cinemachineImpulseSource.GenerateImpulse();
-        forwardSpeed = 0;
+        forwardSpeed = 2;
         isDestroyed = true;
 
         // Explosion VFX
@@ -192,12 +208,12 @@ public class Helicopter : MonoBehaviour
         foreach (var rb in parts)
         {
             rb.isKinematic = false;
-            rb.AddExplosionForce(100f, explosionPos.position, 20f, 5f);
+            rb.AddExplosionForce(1000f, explosionPos.position, 50f, 5f);
 
             if (fireTrailPrefab != null)
             {
                 GameObject trail = Instantiate(fireTrailPrefab, rb.transform.position, Quaternion.identity);
-                trail.transform.SetParent(rb.transform);
+                //trail.transform.SetParent(rb.transform);
             }
         }
 
@@ -212,8 +228,8 @@ public class Helicopter : MonoBehaviour
 
     IEnumerator RestoreTime()
     {
+        yield return new WaitForSeconds(1.5f);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
-        yield return new WaitForSeconds(2.5f);
     }
 }

@@ -34,7 +34,7 @@ public class Turret : MonoBehaviour
 
         float distanceToHelicopter = Vector3.Distance(transform.position, helicopterTransform.position);
         bool helicopterInRange = distanceToHelicopter <= detectionRange;
-        bool helicopterNotCrossed = helicopterTransform.position.z + 2 <= transform.position.z;
+        bool helicopterNotCrossed = helicopterTransform.position.z -1 <= transform.position.z;
 
         if (helicopterInRange && helicopterNotCrossed)
         {

@@ -31,8 +31,9 @@ public class Laser : MonoBehaviour
         if (target == null) return;
 
         float distance = Vector3.Distance(transform.position, target.position);
+        bool helicopterNotCrossed = helicopterTransform.position.z - 1 <= transform.position.z;
 
-        if (distance <= range)
+        if (distance <= range && helicopterNotCrossed)
         {
             RotateTowardsTarget();
 

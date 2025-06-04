@@ -110,7 +110,7 @@ public class ProceduralGeneration : MonoBehaviour
         Renderer renderer = building.GetComponent<Renderer>();
         if (renderer != null)
         {
-            return new Vector3(building.transform.position.x, renderer.bounds.max.y, building.transform.position.z);
+            return new Vector3(building.transform.position.x, renderer.bounds.max.y + 2, building.transform.position.z);
         }
         else
         {
