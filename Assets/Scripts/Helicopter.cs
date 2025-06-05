@@ -194,6 +194,8 @@ public class Helicopter : MonoBehaviour
         cinemachineImpulseSource.GenerateImpulse();
         forwardSpeed = 2;
         isDestroyed = true;
+        AudioManager.instance.Play("Explode");
+        AudioManager.instance.Stop("HeliSound");
 
         // Explosion VFX
         if (explosionEffect != null && explosionPos != null)
@@ -231,5 +233,6 @@ public class Helicopter : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+        AudioManager.instance.bgSound.volume = 0.7f;
     }
 }

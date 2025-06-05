@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
     }
     public void StartGameOnTap()
     {
+        AudioManager.instance.bgSound.volume = .4f;
+        AudioManager.instance.Play("HeliSound");
         StartCoroutine(TakeOff());
     }
     private IEnumerator TakeOff()
@@ -99,10 +101,13 @@ public class GameManager : MonoBehaviour
     private void UpdateScore()
     {
         score += scoreIncreaseRate * Time.deltaTime;
+        int scoreInt = Mathf.FloorToInt(score);
         if (scoreText != null)
         {
             scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
         }
+        UiManager.instance.SetHighScore(scoreInt);
+        
     }
 
     private void DecreaseFuel()
@@ -119,6 +124,13 @@ public class GameManager : MonoBehaviour
         helicopterScript.enabled = false;
         isGameOver = true;
         CurrentState = GameState.GameOver;
+
+        int scoreInt = Mathf.FloorToInt(score);
+        if (scoreInt >= 100)  // Only proceed if score is at least 100
+        {
+            int hundreds = scoreInt / 100;  // This gives how many 100s are in the score
+            UiManager.instance.SetCoins(50 * hundreds);
+        }
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);

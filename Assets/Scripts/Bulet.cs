@@ -17,6 +17,7 @@ public class Bulet : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             other.GetComponent<Helicopter>().TakeDamage(0.1f);
+            AudioManager.instance.Play("BulletHit");
             ReturnToPool();
         }
     }

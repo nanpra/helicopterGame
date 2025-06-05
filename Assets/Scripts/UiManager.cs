@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class UiManager : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class UiManager : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject gameplayPanel;
 
+    public TextMeshProUGUI highScoreText;
+    public TextMeshProUGUI coinsText;
+    public int highScore { get; private set; }
+
+    public int coins { get; private set; }
 
     private void Awake()
     {
@@ -21,6 +27,12 @@ public class UiManager : MonoBehaviour
         }
 
         GameplayEvents.startFlying.AddListener(StartGameOnTap);
+        
+        highScore = PlayerPrefs.GetInt("highScore", highScore);
+        SetHighScore(highScore);
+
+        coins = PlayerPrefs.GetInt("coins", coins);
+        coinsText.SetText(this.coins.ToString());
     }
     public void StartButton()
     {
@@ -30,6 +42,19 @@ public class UiManager : MonoBehaviour
     private void StartGameOnTap()
     {
         gameplayPanel.SetActive(true);
+    }
+
+    public void SetHighScore(int score)
+    {
+        highScore = score;
+        highScoreText.SetText("High Score : " + highScore.ToString());
+        PlayerPrefs.SetInt("highScore", highScore);
+    }
+    public void SetCoins(int coins)
+    {
+        this.coins += coins;
+        coinsText.SetText(this.coins.ToString());
+        PlayerPrefs.SetInt("coins", this.coins);
     }
     private void OnDestroy()
     {
