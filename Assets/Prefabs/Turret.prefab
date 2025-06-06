@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6081025807911349812}
   - component: {fileID: 1877268802220175252}
+  - component: {fileID: 7799731802111811229}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Turret
@@ -54,8 +55,54 @@ MonoBehaviour:
   bulletTag: Bullet
   firePoint: {fileID: 5162077457108154000}
   bulletSpeed: 25
+  bulletDamage: 10
   leadTime: 0.12
   burstIntervalTime: 100
+--- !u!23 &7799731802111811229
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593251206677673046}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 4c57f032d9efaa94cbbc6ea76652bb4c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1706947966527562104
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +331,7 @@ GameObject:
   - component: {fileID: 7144140834137454949}
   - component: {fileID: 8195724525584101742}
   - component: {fileID: 5456889025079287979}
+  - component: {fileID: 5953906395957991321}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -337,7 +385,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: d699310aa16bbe44286c4967a021ae32, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -382,3 +430,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &5953906395957991321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9076680112621969852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50edbb56d776f404fb06b7b5bdb68ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretRenderer: {fileID: 8195724525584101742}
+  baseColor: {r: 1, g: 0, b: 0.73527956, a: 1}
+  pulseSpeed: 5

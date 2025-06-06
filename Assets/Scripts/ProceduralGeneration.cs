@@ -97,7 +97,7 @@ public class ProceduralGeneration : MonoBehaviour
                 height.y *= buildingHeight;
                 obj.transform.localScale = height;
                 obj.transform.position = new Vector3(position.x, buildingHeight / 2, position.z);
-                if(helicopter.position.z > 50)
+                if(TutorialManager.instance.tutorialOver)
                     TrySpawnElement(obj);
             }
 
@@ -155,11 +155,11 @@ public class ProceduralGeneration : MonoBehaviour
         {
             selectedTag = turretTag;
         }
-        else if (chance < 0.3f && PoolingObjects.Instance.HasAvailableObject(laserTag) && helicopter.position.z > 200)
+        else if (chance < 0.3f && PoolingObjects.Instance.HasAvailableObject(laserTag) && helicopter.position.z > 450)
         {
             selectedTag = laserTag;
         }
-        else if (chance < 0.6f && PoolingObjects.Instance.HasAvailableObject(fuelTag) && helicopter.position.z > 150)
+        else if (chance < 0.6f && PoolingObjects.Instance.HasAvailableObject(fuelTag))
         {
             selectedTag = fuelTag;
             spawnPosition += Vector3.up * Random.Range(5f, 18f) + Vector3.forward * Random.Range(0f, 15f);

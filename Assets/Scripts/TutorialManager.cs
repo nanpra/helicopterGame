@@ -1,64 +1,123 @@
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
-    public GameObject step1;         // "Use joystick to move"
-    public GameObject step2;         // "Collect fuel to keep flying"
-    public GameObject step3;         // "Avoid turrets or you'll be shot!"
-    public Button startButton;       // Start button to begin the game
-    public Joystick joystick;        // Reference to the joystick
+    public static TutorialManager instance { get; private set; }
 
-    private bool joystickUsed = false;
-    private bool fuelCollected = false;
-    private bool turretAvoided = false;
+    public TextMeshProUGUI tutInfo;
+    public GameObject tutorialPanel;
+    public GameObject turret;
+    public GameObject fuel;
+    public GameObject health;
+
+    private GameObject spawnedTurret;
+    [SerializeField]private int currentStep = 0;
+    private float heliZPos;
+    public bool tutorialOver = false;
+    public GameObject helicopter;
+    public GameObject arrowMark;
 
     void Start()
     {
-        ShowStep(1);
+        instance = this;
+        Step1();
     }
 
     void Update()
     {
-        if (!joystickUsed && (GameManager.Instance.helicopterScript.joystick.GetJoystickInput().x != 0 || GameManager.Instance.helicopterScript.joystick.GetJoystickInput().y != 0))
-        {
-            joystickUsed = true;
-            ShowStep(2);
-        }
+        heliZPos = helicopter.transform.position.z;
 
-        // You need to set "fuelCollected" and "turretAvoided" externally
+        if (currentStep == 1 && JoystickMoved() && heliZPos > 70)
+            Step2();
+
+        else if (currentStep == 2 && heliZPos > 100)
+            Step3();
+
+        else if (currentStep == 3 && spawnedTurret.transform.position.z + 15 < heliZPos)
+            Step4();
+
+        else if (currentStep == 4 && GameManager.Instance.helicopterScript.lastText)
+            StartCoroutine(UiDelay());
     }
 
-    public void SetFuelCollected()
+    private bool JoystickMoved()
     {
-        if (!fuelCollected)
-        {
-            fuelCollected = true;
-            ShowStep(3);
-        }
+        var input = GameManager.Instance.helicopterScript.joystick.GetJoystickInput();
+        return input.x != 0 || input.y != 0;
     }
 
-    public void SetTurretAvoided()
+    private void Step1()
     {
-        if (!turretAvoided)
-        {
-            turretAvoided = true;
-            startButton.gameObject.SetActive(true);
-        }
+        OpenPanel();
+        currentStep = 1;
+        tutInfo.text = "Use the joystick to move the helicopter.";
     }
 
-    private void ShowStep(int step)
+    private void Step2()
     {
-        step1.SetActive(step == 1);
-        step2.SetActive(step == 2);
-        step3.SetActive(step == 3);
+        OpenPanel();
+        currentStep = 2;
+        GameManager.Instance.healthSlider.gameObject.SetActive(true);
+        GameManager.Instance.healthSlider.gameObject.SetActive(true);
+        GameManager.Instance.fuelSlider.gameObject.SetActive(true);
+        tutInfo.text = "Watch your health and fuel bar indicators.";
+    }
+
+    private void Step3()
+    {
+        OpenPanel();
+        currentStep = 3;
+        Vector3 spawnPos = new Vector3(4, 23, heliZPos + 65);
+        spawnedTurret = Instantiate(turret, spawnPos, Quaternion.identity);
+        Vector3 arrowPos = spawnedTurret.transform.position + Vector3.up * 4;
+        GameObject ArrowMark = Instantiate(arrowMark, arrowPos, Quaternion.identity);
+        ArrowMark.transform.rotation = new Quaternion(90,0,0,0);
+        tutInfo.text = "Avoid bullets and lasers from hidden turrets.";
+    }
+
+    private void Step4()
+    {
+        OpenPanel();
+        currentStep = 4;
+        Vector3 healthPos = new Vector3(helicopter.transform.position.x + Random.Range(-20, 20) , 35 , heliZPos + Random.Range(50, 70));
+        Vector3 fuelPos = new Vector3(helicopter.transform.position.x + Random.Range(-20, 20) , 35 , heliZPos + Random.Range(50, 70));
+        Instantiate(health, healthPos, Quaternion.identity);
+        Instantiate(fuel, fuelPos + Vector3.one , Quaternion.identity);
+        tutInfo.text = "Collect Fuel and Gear to survive!";
+    }
+    private void Step5()
+    {
+        OpenPanel();
+        tutInfo.text = "Survive and create high score";
+        GameManager.Instance.helicopterScript.lastText = false;
+    }
+    public void ContinueBtn()
+    {
+        Time.timeScale = 1;
+        tutorialPanel.SetActive(false);
+    }
+
+    private void OpenPanel()
+    {
+        tutorialPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void StartGame()
     {
-        GameManager.Instance.helicopterScript.enabled = true;
-        GameManager.Instance.proceduralGenerationScript.enabled = true;
-        GameManager.Instance.poolingObjectsScript.enabled = true;
+        tutorialOver = true;
+        if (spawnedTurret != null) Destroy(spawnedTurret);
         gameObject.SetActive(false);
+    }
+
+    IEnumerator UiDelay()
+    {
+        yield return new WaitForSecondsRealtime(2.5f);
+        Step5();
+        yield return new WaitForSecondsRealtime(3);
+        StartGame();
     }
 }

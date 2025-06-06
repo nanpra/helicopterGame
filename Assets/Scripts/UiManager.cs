@@ -8,6 +8,7 @@ public class UiManager : MonoBehaviour
     [Header("Panel References")]
     public GameObject mainMenuPanel;
     public GameObject gameplayPanel;
+    public GameObject tutorialPanel;
 
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI coinsText;

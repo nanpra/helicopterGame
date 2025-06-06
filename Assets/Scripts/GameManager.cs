@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public PlayableDirector takeOffTimeline;
     public ProceduralGeneration worldGenerator;
     public CinemachineCamera mainTPPCam;
+    public TutorialManager tutorialManager;
 
     private void Awake()
     {
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Playing;
         helicopterScript.propellerAnim.speed = 1;
         worldGenerator.enabled = true;
+        tutorialManager.gameObject.SetActive(true);
     }
     private void Update()
     {
