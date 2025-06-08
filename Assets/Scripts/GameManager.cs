@@ -28,10 +28,12 @@ public class GameManager : MonoBehaviour
     public Helicopter helicopterScript;
     public ProceduralGeneration proceduralGenerationScript;
     public PoolingObjects poolingObjectsScript;
+    public GameObject settingsPanel;
 
     private float score = 0f;
     private bool isGameOver = false;
     public bool gasOver;
+    public TextMeshProUGUI dangerInfoText;
 
     [Header("GameStart Refs")]
     public PlayableDirector takeOffTimeline;
@@ -98,6 +100,18 @@ public class GameManager : MonoBehaviour
             helicopterScript.rb.AddTorque(Random.insideUnitSphere * 5f);
             Invoke("GameOver", 2);
         }
+
+        if(fuelSlider.value < 0.3f)
+        {
+            fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
+            dangerInfoText.text = "Search for Fuel";
+        }    
+            
+        else
+        {
+            fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
+            dangerInfoText.text = string.Empty;
+        }
     }
 
     private void UpdateScore()
@@ -160,6 +174,14 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void SettingBtn()
+    {
+        settingsPanel.SetActive(true);
+    }
+    public void Backbtn()
+    {
+        settingsPanel.SetActive(false);
     }
 
     public void OnDestroy()

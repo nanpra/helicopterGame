@@ -19,6 +19,7 @@ public class TutorialManager : MonoBehaviour
     public bool tutorialOver = false;
     public GameObject helicopter;
     public GameObject arrowMark;
+    public OutlineBlinkEffect blinkEffect;
 
     void Start()
     {
@@ -58,12 +59,14 @@ public class TutorialManager : MonoBehaviour
 
     private void Step2()
     {
-        tutorialPanel.SetActive(true);
         currentStep = 2;
+        tutorialPanel.SetActive(true);
         GameManager.Instance.healthSlider.gameObject.SetActive(true);
-        GameManager.Instance.healthSlider.gameObject.SetActive(true);
+        GameManager.Instance.healthSlider.gameObject.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
         GameManager.Instance.fuelSlider.gameObject.SetActive(true);
+        GameManager.Instance.fuelSlider.gameObject.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
         tutInfo.text = "Watch your health and fuel bar indicators.";
+        StartCoroutine(StopBlinkingEffect());
     }
 
     private void Step3()
@@ -126,5 +129,12 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(3);
         tutInfo.text = "Drag up to move upwards";
         tutInfo.text = "Drag down to move downwards";
+    }
+
+    IEnumerator StopBlinkingEffect()
+    {
+        yield return new WaitForSecondsRealtime(2);
+        GameManager.Instance.healthSlider.gameObject.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
+        GameManager.Instance.fuelSlider.gameObject.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
     }
 }

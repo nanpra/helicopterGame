@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class Helicopter : MonoBehaviour
 {
@@ -46,7 +49,7 @@ public class Helicopter : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     public Animator propellerAnim;
     [HideInInspector] public bool lastText;
-    
+    public TMP_Dropdown controlInput;
 
     
     private void Start()
@@ -69,7 +72,12 @@ public class Helicopter : MonoBehaviour
     private void HandleInput()
     {
         Vector2 input = joystick.GetJoystickInput();
-        inputDirection = new Vector3(input.x, -input.y , 1f).normalized;
+        if (controlInput.value == 1)
+            inputDirection = new Vector3(input.x, input.y, 1f).normalized;
+
+        else if (controlInput.value == 0)
+            inputDirection = new Vector3(input.x, -input.y, 1f).normalized;
+            
         if (inputDirection != Vector3.zero)
         {
             targetRotation = Quaternion.LookRotation(inputDirection, Vector3.up);
@@ -110,6 +118,18 @@ public class Helicopter : MonoBehaviour
             GameObject smokePrefab = Instantiate(smokeEffect, transform.position, Quaternion.identity);
             smokePrefab.transform.SetParent(transform);
         }
+        if (GameManager.Instance.healthSlider.value <= 0.25f)
+        {
+            GameManager.Instance.healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
+            GameManager.Instance.dangerInfoText.text = "Search Gear to heal";
+        }
+            
+        else
+        {
+            GameManager.Instance.healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
+            GameManager.Instance.dangerInfoText.text = string.Empty;
+        }
+            
 
 
 #if UNITY_ANDROID || UNITY_IOS

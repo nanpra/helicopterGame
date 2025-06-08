@@ -57,6 +57,7 @@ public class UiManager : MonoBehaviour
         coinsText.SetText(this.coins.ToString());
         PlayerPrefs.SetInt("coins", this.coins);
     }
+
     private void OnDestroy()
     {
         GameplayEvents.takeOff.RemoveListener(StartGameOnTap);
