@@ -30,10 +30,10 @@ public class TutorialManager : MonoBehaviour
     {
         heliZPos = helicopter.transform.position.z;
 
-        if (currentStep == 1 && JoystickMoved() && heliZPos > 70)
+        if (currentStep == 1 && JoystickMoved() && heliZPos > 50)
             Step2();
 
-        else if (currentStep == 2 && heliZPos > 100)
+        else if (currentStep == 2 && heliZPos > 85)
             Step3();
 
         else if (currentStep == 3 && spawnedTurret.transform.position.z + 15 < heliZPos)
@@ -58,7 +58,7 @@ public class TutorialManager : MonoBehaviour
 
     private void Step2()
     {
-        OpenPanel();
+        tutorialPanel.SetActive(true);
         currentStep = 2;
         GameManager.Instance.healthSlider.gameObject.SetActive(true);
         GameManager.Instance.healthSlider.gameObject.SetActive(true);
@@ -119,5 +119,12 @@ public class TutorialManager : MonoBehaviour
         Step5();
         yield return new WaitForSecondsRealtime(3);
         StartGame();
+    }
+
+    IEnumerator TxtDelay()
+    {
+        yield return new WaitForSecondsRealtime(3);
+        tutInfo.text = "Drag up to move upwards";
+        tutInfo.text = "Drag down to move downwards";
     }
 }

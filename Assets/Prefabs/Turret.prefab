@@ -331,7 +331,6 @@ GameObject:
   - component: {fileID: 7144140834137454949}
   - component: {fileID: 8195724525584101742}
   - component: {fileID: 5456889025079287979}
-  - component: {fileID: 5953906395957991321}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -430,18 +429,3 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &5953906395957991321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9076680112621969852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50edbb56d776f404fb06b7b5bdb68ada, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turretRenderer: {fileID: 8195724525584101742}
-  baseColor: {r: 1, g: 0, b: 0.73527956, a: 1}
-  pulseSpeed: 5
