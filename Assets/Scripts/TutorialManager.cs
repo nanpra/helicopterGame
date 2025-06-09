@@ -19,7 +19,6 @@ public class TutorialManager : MonoBehaviour
     public bool tutorialOver = false;
     public GameObject helicopter;
     public GameObject arrowMark;
-    public OutlineBlinkEffect blinkEffect;
 
     void Start()
     {
@@ -77,7 +76,7 @@ public class TutorialManager : MonoBehaviour
         spawnedTurret = Instantiate(turret, spawnPos, Quaternion.identity);
         Vector3 arrowPos = spawnedTurret.transform.position + Vector3.up * 4;
         GameObject ArrowMark = Instantiate(arrowMark, arrowPos, Quaternion.identity);
-        ArrowMark.transform.rotation = new Quaternion(90,0,0,0);
+        ArrowMark.transform.rotation = new Quaternion(0,-90,90,0);
         tutInfo.text = "Avoid bullets and lasers from hidden turrets.";
     }
 

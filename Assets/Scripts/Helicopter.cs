@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+
 
 public class Helicopter : MonoBehaviour
 {
@@ -66,6 +65,7 @@ public class Helicopter : MonoBehaviour
             MoveForward();
             LimitMovement();
             RotateTowardsInput();
+
         }
     }
 
@@ -118,17 +118,7 @@ public class Helicopter : MonoBehaviour
             GameObject smokePrefab = Instantiate(smokeEffect, transform.position, Quaternion.identity);
             smokePrefab.transform.SetParent(transform);
         }
-        if (GameManager.Instance.healthSlider.value <= 0.25f)
-        {
-            GameManager.Instance.healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
-            GameManager.Instance.dangerInfoText.text = "Search Gear to heal";
-        }
-            
-        else
-        {
-            GameManager.Instance.healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
-            GameManager.Instance.dangerInfoText.text = string.Empty;
-        }
+
             
 
 
@@ -165,8 +155,7 @@ public class Helicopter : MonoBehaviour
             GameManager.Instance.healthSlider.value -= buildingHitDamage;
         }
     }
-
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("FuelTank"))

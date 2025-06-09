@@ -10,7 +10,6 @@ public class OutlineBlinkEffect : MonoBehaviour
 
     private Color originalColor;
     private bool blinking = true;
-    public TextMeshProUGUI dangerInfoText;
 
 
     void Start()
@@ -36,24 +35,13 @@ public class OutlineBlinkEffect : MonoBehaviour
         outline.effectColor = Color.Lerp(originalColor, blinkColor, t);
     }
 
-    public void StartBlinking()
-    {
-        blinking = true;
-        if(outline != null)
-        {
-            //GameManager.Instance.healthSlider.GetComponentInChildren<Outline>().enabled = true;
-            //GameManager.Instance.fuelSlider.GetComponentInChildren<Outline>().enabled = true;
-        }
-            
-    }
+    public void StartBlinking() => blinking = true;
 
     public void StopBlinking()
     {
         blinking = false;
         if (outline != null)
         {
-            //GameManager.Instance.healthSlider.GetComponentInChildren<Outline>().enabled = false;
-            //GameManager.Instance.fuelSlider.GetComponentInChildren<Outline>().enabled = false;
             outline.effectColor = originalColor;
         } 
     }

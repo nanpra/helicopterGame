@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 78149921}
   - component: {fileID: 78149923}
   - component: {fileID: 78149922}
+  - component: {fileID: 78149924}
   m_Layer: 5
   m_Name: DangerInfotext
   m_TagString: Untagged
@@ -361,7 +362,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -732}
+  m_AnchoredPosition: {x: 0, y: 1169}
   m_SizeDelta: {x: 1200, y: 200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &78149922
@@ -463,6 +464,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78149920}
   m_CullTransparentMesh: 1
+--- !u!114 &78149924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78149920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff2fce502938bc04bb3a6669f541f46b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dangerText: {fileID: 0}
+  blinkSpeed: 2
+  scaleSpeed: 2
+  scaleAmount: 1.2
+  blinking: 1
 --- !u!1 &111139526
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1221,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2.7
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2614,7 +2632,6 @@ MonoBehaviour:
   tutorialOver: 0
   helicopter: {fileID: 1562305343}
   arrowMark: {fileID: 6146461897886853960, guid: df886d86da38e0e41bb149f3dfd1a3b4, type: 3}
-  blinkEffect: {fileID: 0}
 --- !u!4 &1003599194
 Transform:
   m_ObjectHideFlags: 0
@@ -8370,7 +8387,6 @@ MonoBehaviour:
   outline: {fileID: 0}
   blinkColor: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
   blinkSpeed: 2.5
-  dangerInfoText: {fileID: 0}
 --- !u!114 &7840936230634168279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8734,7 +8750,6 @@ MonoBehaviour:
   outline: {fileID: 0}
   blinkColor: {r: 0, g: 0, b: 0, a: 1}
   blinkSpeed: 2.5
-  dangerInfoText: {fileID: 0}
 --- !u!114 &8579138572765688719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8907,7 +8922,6 @@ MonoBehaviour:
   outline: {fileID: 0}
   blinkColor: {r: 1, g: 0, b: 0, a: 1}
   blinkSpeed: 2
-  dangerInfoText: {fileID: 0}
 --- !u!114 &8988783196828818958
 MonoBehaviour:
   m_ObjectHideFlags: 0

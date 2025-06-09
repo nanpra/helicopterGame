@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 public enum GameState { Playing, GameOver, Idle }
 
 public class GameManager : MonoBehaviour
@@ -105,11 +106,29 @@ public class GameManager : MonoBehaviour
         {
             fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
             dangerInfoText.text = "Search for Fuel";
+            dangerInfoText.GetComponent<RectTransform>().DOAnchorPos(Vector3.down * 732, 1);
+            dangerInfoText.GetComponent<UiPulseEffect>().StartBlinking();
         }    
             
         else
         {
+            dangerInfoText.GetComponent<UiPulseEffect>().StopBlinking();
             fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
+            dangerInfoText.text = string.Empty;
+        }
+
+        if (healthSlider.value <= 0.25f)
+        {
+            healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
+            dangerInfoText.text = "Search Gear to heal";
+            dangerInfoText.GetComponent<RectTransform>().DOAnchorPos(Vector3.down * 732, 1);
+            dangerInfoText.GetComponent<UiPulseEffect>().StartBlinking();
+        }
+
+        else
+        {
+            dangerInfoText.GetComponent<UiPulseEffect>().StopBlinking();
+            healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
             dangerInfoText.text = string.Empty;
         }
     }
