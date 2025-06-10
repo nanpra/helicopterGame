@@ -169,13 +169,14 @@ public class Helicopter : MonoBehaviour
     {
         AudioManager.instance.Play("BallonPop"); 
         Instantiate(ballonBlasteffect , ballon.transform.position, Quaternion.identity);
-        Destroy(ballon);
+        PoolingObjects.Instance.ReturnToPool(ballon.transform.parent.gameObject.tag, ballon.transform.parent.gameObject);
+
     }
 
     private void PickupFuel(GameObject fuel)
     {
         GameManager.Instance.fuelSlider.value += fuelPickupAmount/100;
-        PoolingObjects.Instance.ReturnToPool("Fuel", fuel);
+        PoolingObjects.Instance.ReturnToPool(fuel.transform.parent.gameObject.tag, fuel.transform.parent.gameObject);
 
         GameObject sparkle = Instantiate(flyingSparklePrefabForFuel, fuel.transform.position, Quaternion.identity);
         sparkle.GetComponent<SparkleEffect>().Initialize(fuelBarTargetUI);
@@ -244,5 +245,6 @@ public class Helicopter : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         AudioManager.instance.bgSound.volume = 0.7f;
+        AudioManager.instance.Stop("Danger");
     }
 }

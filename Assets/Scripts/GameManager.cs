@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public CinemachineCamera mainTPPCam;
     public TutorialManager tutorialManager;
 
+    public GameObject ground;
     private void Awake()
     {
         if (Instance == null)
@@ -69,9 +70,11 @@ public class GameManager : MonoBehaviour
         helicopterScript.propellerAnim.SetBool("isTakingOff", true);
         yield return new WaitUntil(() => takeOffTimeline.state == PlayState.Paused);
         StartFlying();
+        ground.SetActive(true);
     }
     private void StartFlying()
     {
+        
         GameplayEvents.startFlying?.Invoke();
         helicopterScript.propellerAnim.SetBool("isFlying", true);
 
