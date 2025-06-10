@@ -80,56 +80,73 @@ public class GameManager : MonoBehaviour
         worldGenerator.enabled = true;
         tutorialManager.gameObject.SetActive(true);
     }
+
     private void Update()
     {
         if (CurrentState == GameState.Playing)
-        {
-            UpdateScore();
-            DecreaseFuel();
-        }
+            GameFlow();
+    }
 
+    private void GameFlow()
+    {
+        UpdateScore();
+        DecreaseFuel();
+
+        // Game Over due to health
         if (healthSlider.value <= 0 && !helicopterScript.isDestroyed)
         {
             helicopterScript.DestroyHelicopter(helicopterScript.transform);
-            Invoke("GameOver" ,3);
+            Invoke("GameOver", 3);
+            return;
         }
 
-        if(fuelSlider.value <= 0 && gasOver)
+        // Game Over due to fuel
+        if (fuelSlider.value <= 0 && gasOver)
         {
             helicopterScript.forwardSpeed = 0;
             helicopterScript.rb.useGravity = true;
             helicopterScript.rb.AddTorque(Random.insideUnitSphere * 5f);
             Invoke("GameOver", 2);
+            return;
         }
 
-        if(fuelSlider.value < 0.3f)
+        // Cache components to avoid repeated calls
+        var fuelBlink = fuelSlider.GetComponentInChildren<OutlineBlinkEffect>();
+        var healthBlink = healthSlider.GetComponentInChildren<OutlineBlinkEffect>();
+        var dangerPulse = dangerInfoText.GetComponent<UiPulseEffect>();
+        var dangerRect = dangerInfoText.GetComponent<RectTransform>();
+
+        bool fuelLow = fuelSlider.value <= 0.3f;
+        bool healthLow = healthSlider.value <= 0.25f;
+
+        if (fuelLow)
         {
-            fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
+            AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search for Fuel";
-            dangerInfoText.GetComponent<RectTransform>().DOAnchorPos(Vector3.down * 732, 1);
-            dangerInfoText.GetComponent<UiPulseEffect>().StartBlinking();
-        }    
-            
-        else
-        {
-            dangerInfoText.GetComponent<UiPulseEffect>().StopBlinking();
-            fuelSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
-            dangerInfoText.text = string.Empty;
-        }
+            dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 
-        if (healthSlider.value <= 0.25f)
+            fuelBlink?.StartBlinking();
+            dangerPulse?.StartBlinking();
+
+            healthBlink?.StopBlinking();
+        }
+        else if (healthLow)
         {
-            healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StartBlinking();
+            AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search Gear to heal";
-            dangerInfoText.GetComponent<RectTransform>().DOAnchorPos(Vector3.down * 732, 1);
-            dangerInfoText.GetComponent<UiPulseEffect>().StartBlinking();
-        }
+            dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 
+            healthBlink?.StartBlinking();
+            dangerPulse?.StartBlinking();
+
+            fuelBlink?.StopBlinking();
+        }
         else
         {
-            dangerInfoText.GetComponent<UiPulseEffect>().StopBlinking();
-            healthSlider.GetComponentInChildren<OutlineBlinkEffect>().StopBlinking();
             dangerInfoText.text = string.Empty;
+            dangerPulse?.StopBlinking();
+            fuelBlink?.StopBlinking();
+            healthBlink?.StopBlinking();
         }
     }
 
@@ -142,7 +159,7 @@ public class GameManager : MonoBehaviour
             scoreText.text = "Score: " + Mathf.FloorToInt(score).ToString();
         }
         UiManager.instance.SetHighScore(scoreInt);
-        
+       
     }
 
     private void DecreaseFuel()
@@ -175,14 +192,8 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        /*helicopterScript.enabled = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        CurrentState = GameState.Playing;
-        isGameOver = false;
-        score = 0;
-        fuelSlider.value = 1;
-        gameOverPanel.SetActive(false);*/
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void StartGame()

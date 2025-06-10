@@ -97,7 +97,7 @@ public class ProceduralGeneration : MonoBehaviour
                 height.y *= buildingHeight;
                 obj.transform.localScale = height;
                 obj.transform.position = new Vector3(position.x, buildingHeight / 2, position.z);
-                if(TutorialManager.instance.tutorialOver)
+                if(TutorialManager.instance !=null && TutorialManager.instance.tutorialOver)
                     TrySpawnElement(obj);
             }
 

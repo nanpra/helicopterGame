@@ -741,6 +741,12 @@ MonoBehaviour:
     pitch: 1
     source: {fileID: 0}
     loop: 0
+  - name: Danger
+    clip: {fileID: 8300000, guid: c316ca6bf04b7044a9c6a7fb32b280a0, type: 3}
+    volume: 0.8
+    pitch: 1
+    source: {fileID: 0}
+    loop: 1
   canPlay: 1
   bgSound: {fileID: 577749814}
 --- !u!4 &275241825
@@ -3301,7 +3307,7 @@ MonoBehaviour:
   healthSlider: {fileID: 650829416684672034}
   gameOverPanel: {fileID: 5708368170911142800}
   gamePlayPanel: {fileID: 3208186871229633031}
-  fuelConsumptionRate: 0.03
+  fuelConsumptionRate: 0.025
   scoreIncreaseRate: 5
   helicopterScript: {fileID: 1283265446}
   proceduralGenerationScript: {fileID: 1770740128}
@@ -6738,7 +6744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &3816517151599386260
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7038,7 +7044,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -74}
+  m_AnchoredPosition: {x: 0, y: 1000}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &4539100720177062391
@@ -8384,7 +8390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf81b56b9460974c979277493336132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outline: {fileID: 0}
+  outline: {fileID: 7840936230634168279}
   blinkColor: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
   blinkSpeed: 2.5
 --- !u!114 &7840936230634168279
@@ -8747,7 +8753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbf81b56b9460974c979277493336132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outline: {fileID: 0}
+  outline: {fileID: 8579138572765688719}
   blinkColor: {r: 0, g: 0, b: 0, a: 1}
   blinkSpeed: 2.5
 --- !u!114 &8579138572765688719

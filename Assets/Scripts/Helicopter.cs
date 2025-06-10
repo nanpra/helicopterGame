@@ -47,7 +47,6 @@ public class Helicopter : MonoBehaviour
     private Quaternion targetRotation;
     [HideInInspector] public Rigidbody rb;
     public Animator propellerAnim;
-    [HideInInspector] public bool lastText;
     public TMP_Dropdown controlInput;
 
     
@@ -175,7 +174,6 @@ public class Helicopter : MonoBehaviour
 
     private void PickupFuel(GameObject fuel)
     {
-        lastText = true;
         GameManager.Instance.fuelSlider.value += fuelPickupAmount/100;
         PoolingObjects.Instance.ReturnToPool("Fuel", fuel);
 
@@ -186,7 +184,6 @@ public class Helicopter : MonoBehaviour
 
     private void PickupObject(GameObject pickup)
     {
-        lastText=true;
         if (!halfHealth)
             smokeEffect.gameObject.SetActive(false);
 

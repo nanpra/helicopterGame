@@ -30,7 +30,7 @@ public class OutlineBlinkEffect : MonoBehaviour
     void Update()
     {
         if (!blinking) return;
-
+        
         float t = Mathf.PingPong(Time.time * blinkSpeed, 1f);
         outline.effectColor = Color.Lerp(originalColor, blinkColor, t);
     }

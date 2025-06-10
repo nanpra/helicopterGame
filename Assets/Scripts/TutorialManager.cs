@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +40,7 @@ public class TutorialManager : MonoBehaviour
         else if (currentStep == 3 && spawnedTurret.transform.position.z + 15 < heliZPos)
             Step4();
 
-        else if (currentStep == 4 && GameManager.Instance.helicopterScript.lastText)
+        else if (currentStep == 4 && health.transform.position.z + 2 < heliZPos)
             StartCoroutine(UiDelay());
     }
 
@@ -94,7 +95,6 @@ public class TutorialManager : MonoBehaviour
     {
         OpenPanel();
         tutInfo.text = "Survive and create high score";
-        GameManager.Instance.helicopterScript.lastText = false;
     }
     public void ContinueBtn()
     {
@@ -110,6 +110,7 @@ public class TutorialManager : MonoBehaviour
 
     public void StartGame()
     {
+        GameManager.Instance.scoreText.rectTransform.DOAnchorPos(Vector2.down * 74, 1);
         tutorialOver = true;
         if (spawnedTurret != null) Destroy(spawnedTurret);
         gameObject.SetActive(false);
