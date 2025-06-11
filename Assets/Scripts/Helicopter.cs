@@ -237,6 +237,5 @@ public class Helicopter : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         AudioManager.instance.bgSound.volume = 0.7f;
-        AudioManager.instance.Stop("Danger");
     }
 }

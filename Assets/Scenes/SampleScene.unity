@@ -266,7 +266,7 @@ MonoBehaviour:
     loop: 0
   - name: Danger
     clip: {fileID: 8300000, guid: c316ca6bf04b7044a9c6a7fb32b280a0, type: 3}
-    volume: 0.182
+    volume: 0.06
     pitch: 1
     source: {fileID: 0}
     loop: 1
@@ -524,6 +524,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 22106dc63dce41746ad234a91af2d657, type: 3}
   m_PrefabInstance: {fileID: 404019497}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &407865901 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7734105207258624744, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+  m_PrefabInstance: {fileID: 2755599212423400291}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
@@ -2007,7 +2012,7 @@ MonoBehaviour:
   healthTag: Health
   bulletTag: Bullet
   laserTag: Laser
-  spacing: 10
+  spacing: 2
 --- !u!4 &1770740129
 Transform:
   m_ObjectHideFlags: 0
@@ -2215,10 +2220,30 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1276274312}
+    - target: {fileID: 2993721765429091807, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2993721765429091807, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2993721765429091807, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4674213994168219393, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1003599193}
+    - target: {fileID: 5896265438623483902, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5896265438623483902, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6024620538149639606, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2299,10 +2324,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7951408650431231905, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 6095706095546160357, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6095706095546160357, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789414796780021101, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789414796780021101, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6789414796780021101, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8302103664114638258, guid: 3c46dfd4b9469ee49849a758a2202d07, type: 3}
+      propertyPath: settingsButton
       value: 
-      objectReference: {fileID: 1276274312}
+      objectReference: {fileID: 407865901}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

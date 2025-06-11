@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
             dangerPulse?.StartBlinking();
 
             healthBlink?.StopBlinking();
+            PlayDangerAudio();
+            playDangerAudio = true;
         }
         else if (healthLow)
         {
@@ -155,6 +157,14 @@ public class GameManager : MonoBehaviour
             healthBlink?.StopBlinking();
         }
     }
+    bool playDangerAudio = false;
+    private void PlayDangerAudio()
+    {
+        if (playDangerAudio)
+            return;
+
+        AudioManager.instance.Play("Danger");
+    }
 
     private void UpdateScore()
     {
@@ -174,6 +184,7 @@ public class GameManager : MonoBehaviour
         if (fuelSlider.value <= 0f)
         {
             gasOver = true;
+            AudioManager.instance.Stop("Danger");
         }
     }
 
