@@ -22,6 +22,8 @@ public class ProceduralGeneration : MonoBehaviour
 
     private float nextSpawnZ = 0f;
 
+    public float spacing = 1f;
+
     private void Start()
     {
         GenerateInitialObjects();
@@ -43,7 +45,7 @@ public class ProceduralGeneration : MonoBehaviour
         {
             for (int z = 0; z < gridSize.y; z++)
             {
-                Vector3 position = GetRandomPosition(x, z);
+                Vector3 position = GetRandomPosition(x, z, spacing);
                 SpawnObject(buildingTag, position);
             }
         }
@@ -57,31 +59,59 @@ public class ProceduralGeneration : MonoBehaviour
         {
             float intz = nextSpawnZ / spawnAreaSize.z;
             int INTZ = (int)intz;
-            Vector3 position = GetRandomPosition(x, INTZ);
+            Vector3 position = GetRandomPosition(x, INTZ, spacing);
             SpawnObject(buildingTag, position);
         }
 
         nextSpawnZ += spawnAreaSize.z;
     }
 
-    private Vector3 GetRandomPosition(int x, int z)
+    private Vector3 GetRandomPosition(int x, int z, float spacing = 1.0f)
     {
         float posX = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
         float posZ = z * spawnAreaSize.z;
         Vector3 position = new Vector3(posX, 0, posZ);
 
-        // Ensure position is not occupied by another building
         int maxAttempts = 10; // Prevents infinite loops
         int attempts = 0;
-        while (!occupiedPositions.Contains(position) && attempts < maxAttempts)
+
+        // Check if the new position is too close to any existing position
+        bool positionValid = false;
+        while (!positionValid && attempts < maxAttempts)
         {
-            posX = GameManager.Instance.helicopterScript.transform.position.x + Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
-            position = new Vector3(posX, 0, posZ);
-            attempts++;
+            positionValid = true; // Assume valid unless proven otherwise
+
+            // Check against all occupied positions
+            foreach (Vector3 occupiedPos in occupiedPositions)
+            {
+                float distance = Vector3.Distance(position, occupiedPos);
+                if (distance < spacing)
+                {
+                    positionValid = false;
+                    break;
+                }
+            }
+
+            if (!positionValid)
+            {
+                // Try a new random position
+                posX = Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2);
+                position = new Vector3(posX, 0, posZ);
+                attempts++;
+            }
         }
 
-        occupiedPositions.Add(position);
-        return position;
+        if (positionValid)
+        {
+            occupiedPositions.Add(position);
+            return position;
+        }
+        else
+        {
+            // Fallback: Return a default position (could also return null or handle differently)
+            Debug.LogWarning("Failed to find a valid position after " + maxAttempts + " attempts.");
+            return new Vector3(0, 0, posZ);
+        }
     }
 
     private void SpawnObject(string tag, Vector3 position)

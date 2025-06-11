@@ -70,7 +70,10 @@ public class GameManager : MonoBehaviour
         helicopterScript.propellerAnim.SetBool("isTakingOff", true);
         yield return new WaitUntil(() => takeOffTimeline.state == PlayState.Paused);
         StartFlying();
-        ground.SetActive(true);
+        if(ground != null)
+        {
+            ground.SetActive(true);
+        }
     }
     private void StartFlying()
     {
