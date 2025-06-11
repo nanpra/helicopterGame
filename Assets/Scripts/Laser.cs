@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Laser : MonoBehaviour
 {
+    [Header("Turret Settings")]
     private Transform target;
     public Transform turretHead;
     public LineRenderer laserBeam;
@@ -66,7 +67,7 @@ public class Laser : MonoBehaviour
         {
             playerHealth.TakeDamage(damage);
         }
-
+        AudioManager.instance.Play("LaserTurret");
         yield return new WaitForSeconds(laserDuration);
 
         laserBeam.enabled = false;

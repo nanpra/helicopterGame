@@ -325,8 +325,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 32.699997}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 53}
+  m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &42124185
 MonoBehaviour:
@@ -375,7 +375,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -883,6 +883,12 @@ MonoBehaviour:
     pitch: 1
     source: {fileID: 0}
     loop: 1
+  - name: LaserTurret
+    clip: {fileID: 8300000, guid: b39762987c03b8a4899559ea5dd52404, type: 3}
+    volume: 0.182
+    pitch: 1
+    source: {fileID: 0}
+    loop: 1
   canPlay: 1
   bgSound: {fileID: 577749814}
 --- !u!4 &275241825
@@ -1265,7 +1271,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 4
-    Time: 2.5
+    Time: 1.2
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -1942,7 +1948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &517193698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2018,7 +2024,7 @@ Transform:
   m_GameObject: {fileID: 517193697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0000003259629, y: -21.3, z: 367.84183}
+  m_LocalPosition: {x: -0.0000003259629, y: -8.8, z: 367.84183}
   m_LocalScale: {x: 230.394, y: 51.17172, z: 363.78}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3019,7 +3025,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutInfo: {fileID: 3289265774155468812}
   tutorialPanel: {fileID: 8661920927312770729}
-  turret: {fileID: 1593251206677673046, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
+  turret: {fileID: 6962519821391646547, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
   fuel: {fileID: 3581591018745644854, guid: d15b678ab2e6b174bbffc50e52523059, type: 3}
   health: {fileID: 2269232342775298833, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
   currentStep: 0
@@ -3345,17 +3351,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - tag: Bullet
-    prefab: {fileID: 5694905771358377352, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
+    prefab: {fileID: 6796327854241907399, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
     size: 2
   - tag: Fuel
     prefab: {fileID: 2269232342775298833, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
     size: 3
   - tag: Turret
-    prefab: {fileID: 1593251206677673046, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
+    prefab: {fileID: 6962519821391646547, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
     size: 3
   - tag: Building
     prefab: {fileID: 100000, guid: 383da95b3919a4a468d959db2f751974, type: 3}
-    size: 300
+    size: 100
   - tag: Health
     prefab: {fileID: 3581591018745644854, guid: d15b678ab2e6b174bbffc50e52523059, type: 3}
     size: 3
@@ -4578,7 +4584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1612660108}
   - component: {fileID: 1612660111}
-  - component: {fileID: 1612660110}
+  - component: {fileID: 1612660113}
   - component: {fileID: 1612660112}
   m_Layer: 0
   m_Name: DeathCam
@@ -4595,39 +4601,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1612660107}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.026000598, y: 0.96830446, z: -0.11409364, w: -0.2206652}
-  m_LocalPosition: {x: -0.84956837, y: 31, z: 32.857464}
+  m_LocalRotation: {x: -0.0457234, y: 0.9506436, z: -0.17020878, w: -0.25537264}
+  m_LocalPosition: {x: 6.5232716, y: 39.27, z: 40.24391}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1612660110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612660107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 15.8, y: 5.56, z: -11.4}
-  VerticalArmLength: 1.2
-  CameraSide: 1
-  CameraDistance: 4
-  AvoidObstacles:
-    Enabled: 0
-    CollisionFilter:
-      serializedVersion: 2
-      m_Bits: 1
-    IgnoreTag: 
-    CameraRadius: 0.2
-    DampingIntoCollision: 0
-    DampingFromCollision: 0.5
 --- !u!114 &1612660111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4684,6 +4664,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookAtOffset: {x: -6.95, y: -1.59, z: 11.12}
+--- !u!114 &1612660113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612660107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  ShoulderOffset: {x: 19.6, y: -1.07, z: -4.32}
+  VerticalArmLength: 16.1
+  CameraSide: 1
+  CameraDistance: 20.8
+  AvoidObstacles:
+    Enabled: 0
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 1
+    IgnoreTag: 
+    CameraRadius: 0.2
+    DampingIntoCollision: 0
+    DampingFromCollision: 0.5
 --- !u!1 &1708723407
 GameObject:
   m_ObjectHideFlags: 0
@@ -5069,8 +5075,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   helicopter: {fileID: 1283265448}
-  gridSize: {x: 10, y: 10}
-  spawnAreaSize: {x: 100, y: 0, z: 4}
+  gridSize: {x: 5, y: 8}
+  spawnAreaSize: {x: 75, y: 0, z: 4}
   despawnDistance: 75
   buildingTag: Building
   turretTag: Turret
@@ -5252,8 +5258,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 60}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 73}
+  m_SizeDelta: {x: 250, y: 80}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1900192897
 MonoBehaviour:
@@ -5302,7 +5308,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7708,6 +7714,30 @@ PrefabInstance:
       propertyPath: flyingSparklePrefabForHealth
       value: 
       objectReference: {fileID: 820953977}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Size.x
+      value: 1.7201383
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Size.y
+      value: 1.8022594
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Size.z
+      value: 7.5971026
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Center.x
+      value: -0.00020635186
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Center.y
+      value: -0.14552021
+      objectReference: {fileID: 0}
+    - target: {fileID: 1769517891673275848, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
+      propertyPath: m_Center.z
+      value: -1.0053651
+      objectReference: {fileID: 0}
     - target: {fileID: 6655842698293592739, guid: 4d005f58dc5b28b42afb8bda1370324d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.6

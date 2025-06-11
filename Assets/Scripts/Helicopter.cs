@@ -64,7 +64,6 @@ public class Helicopter : MonoBehaviour
             MoveForward();
             LimitMovement();
             RotateTowardsInput();
-
         }
     }
 
@@ -85,8 +84,8 @@ public class Helicopter : MonoBehaviour
     private void LimitMovement()
     {
         Vector3 newPosition = transform.position;
-        newPosition.y = Mathf.Clamp(newPosition.y, 0, 40);
-        newPosition.x = Mathf.Clamp(newPosition.x, -50, 50);
+        newPosition.y = Mathf.Clamp(newPosition.y, 0, 50);
+        //newPosition.x = Mathf.Clamp(newPosition.x, -50, 50);
         transform.position = newPosition;
     }
 
@@ -229,14 +228,7 @@ public class Helicopter : MonoBehaviour
                 //trail.transform.SetParent(rb.transform);
             }
         }
-
-
-        //// Disable control scripts
-        //foreach (var script in GetComponents<MonoBehaviour>())
-        //{
-        //    if (script != this)
-        //        script.enabled = false;
-        //}
+        gameObject.GetComponent<BoxCollider>().enabled = false;
     }
 
     IEnumerator RestoreTime()

@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
 
         if (fuelLow)
         {
-            AudioManager.instance.Play("Danger");
+            //AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search for Fuel";
             dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         }
         else if (healthLow)
         {
-            AudioManager.instance.Play("Danger");
+            //AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search Gear to heal";
             dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 

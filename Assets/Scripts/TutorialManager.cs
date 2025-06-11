@@ -8,6 +8,7 @@ public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager instance { get; private set; }
 
+    [Header("Basic Info")]
     public TextMeshProUGUI tutInfo;
     public GameObject tutorialPanel;
     public GameObject turret;
@@ -100,12 +101,14 @@ public class TutorialManager : MonoBehaviour
     {
         Time.timeScale = 1;
         tutorialPanel.SetActive(false);
+        AudioManager.instance.Play("HeliSound");
     }
 
     private void OpenPanel()
     {
         tutorialPanel.SetActive(true);
         Time.timeScale = 0;
+        AudioManager.instance.Stop("HeliSound");
     }
 
     public void StartGame()
@@ -118,9 +121,9 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator UiDelay()
     {
-        yield return new WaitForSecondsRealtime(2.5f);
+        yield return new WaitForSecondsRealtime(1);
         Step5();
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(1.5f);
         StartGame();
     }
 
