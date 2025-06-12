@@ -127,7 +127,6 @@ public class GameManager : MonoBehaviour
 
         if (fuelLow)
         {
-            //AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search for Fuel";
             dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 
@@ -140,7 +139,6 @@ public class GameManager : MonoBehaviour
         }
         else if (healthLow)
         {
-            //AudioManager.instance.Play("Danger");
             dangerInfoText.text = "Search Gear to heal";
             dangerRect.DOAnchorPos(Vector3.down * 732, 1);
 
@@ -148,9 +146,12 @@ public class GameManager : MonoBehaviour
             dangerPulse?.StartBlinking();
 
             fuelBlink?.StopBlinking();
+            PlayDangerAudio();
+            playDangerAudio = true;
         }
         else
         {
+            AudioManager.instance.Stop("Danger");
             dangerInfoText.text = string.Empty;
             dangerPulse?.StopBlinking();
             fuelBlink?.StopBlinking();

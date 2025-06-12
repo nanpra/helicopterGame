@@ -198,8 +198,6 @@ public class Helicopter : MonoBehaviour
 
     public void DestroyHelicopter(Transform explosionPos)
     {
-        transform.GetChild(0).gameObject.SetActive(false);
-        transform.GetChild(1).gameObject.SetActive(true);
         deathCam.gameObject.SetActive(true);
         cinemachineImpulseSource.GenerateImpulse();
         forwardSpeed = 2;
@@ -216,20 +214,30 @@ public class Helicopter : MonoBehaviour
         //slow motion
         Time.timeScale = 0.3f;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        StartCoroutine(RestoreTime());
+
+        EnableGravityOnAllChildren();
         foreach (var rb in parts)
         {
             rb.isKinematic = false;
             rb.AddExplosionForce(1000f, explosionPos.position, 50f, 5f);
+        }
+        StartCoroutine(RestoreTime());
+    }
 
-            if (fireTrailPrefab != null)
+    void EnableGravityOnAllChildren()
+    {
+        foreach (Transform child in GetComponentsInChildren<Transform>())
+        {
+            if (child == transform) continue;
+
+            Rigidbody rb = child.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                GameObject trail = Instantiate(fireTrailPrefab, rb.transform.position, Quaternion.identity);
-                //trail.transform.SetParent(rb.transform);
+                rb.useGravity = true;
             }
         }
-        gameObject.GetComponent<BoxCollider>().enabled = false;
     }
+
 
     IEnumerator RestoreTime()
     {

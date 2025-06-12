@@ -41,7 +41,7 @@ public class TutorialManager : MonoBehaviour
         else if (currentStep == 3 && spawnedTurret.transform.position.z + 15 < heliZPos)
             Step4();
 
-        else if (currentStep == 4 && health.transform.position.z + 2 < heliZPos)
+        else if (currentStep == 4 && helicopter.transform.position.z > 235)
             StartCoroutine(UiDelay());
     }
 
@@ -89,7 +89,7 @@ public class TutorialManager : MonoBehaviour
         Vector3 healthPos = new Vector3(helicopter.transform.position.x + Random.Range(-20, 20) , 35 , heliZPos + Random.Range(50, 70));
         Vector3 fuelPos = new Vector3(helicopter.transform.position.x + Random.Range(-20, 20) , 35 , heliZPos + Random.Range(50, 70));
         Instantiate(health, healthPos, Quaternion.identity);
-        Instantiate(fuel, fuelPos + Vector3.one , Quaternion.identity);
+        Instantiate(fuel, fuelPos, Quaternion.identity);
         tutInfo.text = "Collect Fuel and Gear to survive!";
     }
     private void Step5()

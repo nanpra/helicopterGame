@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1817719607754316047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4199815184570731955}
+  m_Layer: 0
+  m_Name: FirePoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4199815184570731955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817719607754316047}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.2491, y: 0.38, z: 0.3778}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7769842197471041001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8360154152839448981
 GameObject:
   m_ObjectHideFlags: 0
@@ -25,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 8360154152839448981}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.38, z: 0.322}
+  m_LocalPosition: {x: 0.2395, y: 0.38, z: 0.3778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -113,6 +144,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3f71e2842c2aa474b951e56643f87809, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5133447374195621129}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3f71e2842c2aa474b951e56643f87809, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4199815184570731955}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3f71e2842c2aa474b951e56643f87809, type: 3}
       insertIndex: -1
@@ -145,11 +179,12 @@ MonoBehaviour:
   detectionRange: 25
   fireRate: 1
   bulletTag: Bullet
-  firePoint: {fileID: 5133447374195621129}
+  firePoints:
+  - {fileID: 5133447374195621129}
+  - {fileID: 4199815184570731955}
   bulletSpeed: 25
   bulletDamage: 10
   leadTime: 0.12
-  burstIntervalTime: 100
 --- !u!4 &7769842197471041001 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3f71e2842c2aa474b951e56643f87809, type: 3}

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Turret : MonoBehaviour
 {
@@ -7,15 +6,14 @@ public class Turret : MonoBehaviour
     public Transform turretHead;
     public float rotationSpeed = 5f;
     public float detectionRange = 30f;
-    public float fireRate = 2f;
+    public float fireRate = 1.5f;
     public string bulletTag = "Bullet";
 
     [Header("Bullet Settings")]
-    public Transform firePoint;
+    public Transform[] firePoints; // Add 2 fire points in inspector
     public float bulletSpeed = 20f;
     public float bulletDamage = 10f;
     public float leadTime = 0.5f;
-    public float burstIntervalTime = 3f;
 
     private float nextFireTime;
     private Transform helicopterTransform;
@@ -34,14 +32,14 @@ public class Turret : MonoBehaviour
 
         float distanceToHelicopter = Vector3.Distance(transform.position, helicopterTransform.position);
         bool helicopterInRange = distanceToHelicopter <= detectionRange;
-        bool helicopterNotCrossed = helicopterTransform.position.z -1 <= transform.position.z;
+        bool helicopterNotCrossed = helicopterTransform.position.z - 1 <= transform.position.z;
 
         if (helicopterInRange && helicopterNotCrossed)
         {
             RotateTowardsTarget();
             if (Time.time >= nextFireTime)
             {
-                StartCoroutine(FireBurst());
+                FireFromAllPoints();
                 nextFireTime = Time.time + fireRate;
             }
         }
@@ -55,33 +53,28 @@ public class Turret : MonoBehaviour
         turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRotation, rotationSpeed * Time.deltaTime);
     }
 
-    private IEnumerator FireBurst()
+    private void FireFromAllPoints()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            Fire();
-            yield return new WaitForSeconds(0.4f);
-        }
-        yield return new WaitForSeconds(burstIntervalTime);
-    }
+        Vector3 predictedPosition = PredictHelicopterPosition();
+        Vector3 fireDirection = (predictedPosition - firePoints[0].position).normalized;
 
-    private void Fire()
-    {
-        GameObject bullet = PoolingObjects.Instance.SpawnFromPool(bulletTag, firePoint.position, firePoint.rotation);
-        if (bullet == null) return;
-
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        if (rb != null)
+        foreach (Transform point in firePoints)
         {
-            Vector3 predictedPosition = PredictHelicopterPosition();
-            Vector3 fireDirection = (predictedPosition - firePoint.position).normalized;
-            rb.linearVelocity = fireDirection * bulletSpeed;
+            GameObject bullet = PoolingObjects.Instance.SpawnFromPool(bulletTag, point.position, Quaternion.LookRotation(fireDirection));
+            if (bullet != null)
+            {
+                Rigidbody rb = bullet.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.linearVelocity = fireDirection * bulletSpeed;
+                }
+            }
         }
     }
 
     private Vector3 PredictHelicopterPosition()
     {
-        if (helicopterTransform == null) return firePoint.position;
+        if (helicopterTransform == null) return Vector3.zero;
 
         Rigidbody heliRb = helicopterTransform.GetComponent<Rigidbody>();
         if (heliRb == null) return helicopterTransform.position;
