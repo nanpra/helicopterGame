@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
         if (scoreInt >= 100)  // Only proceed if score is at least 100
         {
             int hundreds = scoreInt / 100;  // This gives how many 100s are in the score
-            UiManager.instance.SetCoins(50 * hundreds);
+            UiManager.instance.SetCoins(10 * hundreds);
         }
 
         if (gameOverPanel != null)

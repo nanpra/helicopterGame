@@ -72,5 +72,7 @@ public class Laser : MonoBehaviour
 
         laserBeam.enabled = false;
         isFiring = false;
+        AudioManager.instance.Stop("LaserTurret");
+
     }
 }

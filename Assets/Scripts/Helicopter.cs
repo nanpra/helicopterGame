@@ -117,11 +117,15 @@ public class Helicopter : MonoBehaviour
             smokePrefab.transform.SetParent(transform);
         }
 
-            
+
 
 
 #if UNITY_ANDROID || UNITY_IOS
-        Handheld.Vibrate();
+        if (PlayerPrefsExtra.GetBool("VibrationToggle", true))
+        {
+            Handheld.Vibrate();
+        }
+
 #endif
 
         StartCoroutine(ShakeHelicopter());
@@ -245,5 +249,7 @@ public class Helicopter : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         AudioManager.instance.bgSound.volume = 0.7f;
+        AudioManager.instance.StopAll();
+        UiManager.instance.gameplayPanel.SetActive(false);
     }
 }

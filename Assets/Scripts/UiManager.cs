@@ -57,7 +57,20 @@ public class UiManager : MonoBehaviour
         coinsText.SetText(this.coins.ToString());
         PlayerPrefs.SetInt("coins", this.coins);
     }
-
+    public bool HasEnoughCoins(int price)
+    {
+        if(price > coins)
+        {
+            return false;
+        }
+        return true;
+    }
+    public void UseCoinsToBuy(int price)
+    {
+        coins = PlayerPrefs.GetInt("coins", coins);
+        coins -= price;
+        coinsText.SetText(this.coins.ToString());
+    }
     private void OnDestroy()
     {
         GameplayEvents.takeOff.RemoveListener(StartGameOnTap);

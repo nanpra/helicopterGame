@@ -2,6 +2,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
@@ -22,14 +23,36 @@ public class TutorialManager : MonoBehaviour
     public GameObject helicopter;
     public GameObject arrowMark;
 
+    bool complete = false;
+
     void Start()
     {
         instance = this;
+        complete = PlayerPrefsExtra.GetBool("isComplete", false);
+        if (complete)
+        {
+            if(SceneManager.GetActiveScene().buildIndex > 0)
+            {
+                GameManager.Instance.healthSlider.gameObject.SetActive(false);
+            }
+            else
+            {
+                GameManager.Instance.healthSlider.gameObject.SetActive(true);
+            }
+            GameManager.Instance.fuelSlider.gameObject.SetActive(true);
+            StartGame();
+            return;
+        }
+            
+
         Step1();
     }
 
     void Update()
     {
+        if (complete)
+            return;
+
         heliZPos = helicopter.transform.position.z;
 
         if (currentStep == 1 && JoystickMoved() && heliZPos > 50)
@@ -125,6 +148,8 @@ public class TutorialManager : MonoBehaviour
         Step5();
         yield return new WaitForSecondsRealtime(1.5f);
         StartGame();
+        PlayerPrefsExtra.SetBool("isComplete", true);
+
     }
 
     IEnumerator TxtDelay()

@@ -1,0 +1,12 @@
+# ninja log v5
+287	941	7713844018715469	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	dec3d68c00410274
+945	1274	7713844021970388	C:/Users/arjun/OneDrive/Documents/GitHub/helicopterGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/3t4z4rt3/obj/arm64-v8a/libswappywrapper.so	763948a85da1a446
+186	2039	7713844029582348	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	7688d1238893c5f
+141	2084	7713844030030786	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	20ef7419e656f665
+36	2116	7713844030414929	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	9f2f9d09efa69d12
+243	2152	7713844030731120	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	2f55fe79b6f78820
+214	2311	7713844032314407	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	8db7097258655c62
+67	2410	7713844033291120	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	e9c539f87e9bc2e2
+111	2755	7713844036822429	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	8d6e7f9e80280dac
+3	3005	7713844039372091	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	6dcb166e35deb0a5
+3006	3220	7713844041558371	C:/Users/arjun/OneDrive/Documents/GitHub/helicopterGame/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/3t4z4rt3/obj/arm64-v8a/libgame.so	ccb9fd36c6887eea
