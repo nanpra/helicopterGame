@@ -118,7 +118,7 @@ public class TutorialManager : MonoBehaviour
     private void Step5()
     {
         OpenPanel();
-        tutInfo.text = "Survive and create high score";
+        tutInfo.text = "Survive and create high score to collect more coins";
     }
     public void ContinueBtn()
     {

@@ -70,6 +70,7 @@ public class Turret : MonoBehaviour
                 }
             }
         }
+        AudioManager.instance.Play("TurretSound");
     }
 
     private Vector3 PredictHelicopterPosition()

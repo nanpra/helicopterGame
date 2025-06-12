@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5861437319802903031
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2117287501754571237}
+  - component: {fileID: 4912494939177490189}
+  m_Layer: 0
+  m_Name: PoolingObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2117287501754571237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5861437319802903031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -37.940506, y: 2.8189745, z: 54.810814}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4912494939177490189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5861437319802903031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898ad2f078789af488f1c595870b6fd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: Bullet
+    prefab: {fileID: 6796327854241907399, guid: f8d8ab01c22a1434e89e4c163ac952c0, type: 3}
+    size: 2
+  - tag: Fuel
+    prefab: {fileID: 2269232342775298833, guid: 408c8cd38b1ed0246aa87a46c8743c04, type: 3}
+    size: 3
+  - tag: Turret
+    prefab: {fileID: 6962519821391646547, guid: 2d9c95c5fdf1aa84cbb5e26a677f927b, type: 3}
+    size: 3
+  - tag: Building
+    prefab: {fileID: 100000, guid: 383da95b3919a4a468d959db2f751974, type: 3}
+    size: 100
+  - tag: Health
+    prefab: {fileID: 3581591018745644854, guid: d15b678ab2e6b174bbffc50e52523059, type: 3}
+    size: 3
+  - tag: Laser
+    prefab: {fileID: 5991726302647356560, guid: 38a19713ab742d04c984c819748d1374, type: 3}
+    size: 2

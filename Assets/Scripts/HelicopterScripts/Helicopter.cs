@@ -223,7 +223,7 @@ public class Helicopter : MonoBehaviour
         foreach (var rb in parts)
         {
             rb.isKinematic = false;
-            rb.AddExplosionForce(1000f, explosionPos.position, 50f, 5f);
+            rb.AddExplosionForce(2600, explosionPos.position, 100f, 10f);
         }
         StartCoroutine(RestoreTime());
     }
